@@ -1,63 +1,73 @@
-import userModel from "../models/userSchema.js";
-import emailValidator from "email-validator";
+import User from "../models/userModel.js";
+import AppError from "../utils/errorUtil.js";
+import cloudinary from "cloudinary";
+import fs from "fs/promises";
+import bcrypt from "bcrypt";
 const signup = async (req, res, next) => {
-    const { name, number, email, password, confirmPassword, role } = req.body;
-    console.log(name, number, email, password, confirmPassword, role);
+    const { fullName, mobile, email, password, confirmPassword, role } = req.body
 
-    if (!name || !number || !email || !password || !confirmPassword || !role) {
-        return res.status(200).json({
-            success: false,
-            message: "Every field is required"
-        })    
+    if (!fullName || !mobile || !email || !password || !confirmPassword || !role) {
+        return next(new AppError('ALL fields  are required', 400));
     }
 
-    const validEmail = emailValidator.validate(email);
-    if(!validEmail) {
-        return res.status(200).json({
-            success: false,
-            message: "Please provide a valid email id"
-        })      
+    const userExists = await User.findOne({email})
+
+    if (userExists) {
+        return next(new AppError('Email already exists', 400));
     }
 
-    if(password !== confirmPassword) {
-        return res.status(200).json({
-            success: false,
-            message: "Please provide a valid email id"
-        })   
+    const hashedPassword = await bcrypt.hash(password,10);
+    const user = await User.create({
+        fullName,
+        mobile,
+        email,
+        password: hashedPassword,
+        avatar: {
+            public_id: email,
+            secure_url: 'https://en.wikipedia.org/wiki/Image#/media/File:Image_created_with_a_mobile_phone.png' 
+        },
+        role
+    });
+    if (req.file) {
+        try{
+            const result = await cloudinary.v2.uploader.upload(req.file.path, {
+                folder: "FBS",
+                width: 250,
+                height:250,
+                gravity: "face",
+                crop: "fill",
+            });
+            if (result) {
+                user.avatar.public_id = result.public_id;
+                user.avatar.secure_url = result.secure_url;
+                //remove file from server
+                fs.rm(`uploads/${req.file.filename}`);
+            }
+        } catch (error) {
+          return next(new AppError('fila not uploaded', 400));
+        }
+    }
+    console.log(user);
+
+    if (!user) {
+        return next(AppError('User signup failed please try again', 400))
     }
     
-    if (!number || isNaN(number)) {
-        return res.status(200).json({
-            success: false,
-            message: "Please provide a valid number"
-        });
-      }
-    try {
-        const userInfo = userModel(req.body);
-        const result = await userInfo.save(); //save data in database
+    await user.save();
 
-        return res.status(200).json({
-            success: true,
-            data: result,
-            name,
-            number,
-            email,
-            password,
-            confirmPassword,
-            role
-        });
-    } catch(e) {
-        if(e.coed === 11000) {
-            return res.status(400).json({
-                success: false,
-                message: "Account alread exists with provided email id"
-            })
-        }
-        return res.status(400).json({
-            success: false,
-            message: e.message
-        })
-    }
-  
+    user.password = undefined;
+
+    
+    res.status(201).json({
+        success: true,
+        message: 'user signup successfully',
+        user
+    })
 }
-export { signup }
+const getProfile = (req, res) => {
+
+}
+export { 
+    signup,
+    getProfile
+ }
