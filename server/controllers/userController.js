@@ -3,6 +3,7 @@ import AppError from "../utils/errorUtil.js";
 import cloudinary from "cloudinary";
 import fs from "fs/promises";
 import bcrypt from "bcrypt";
+import Joi from 'joi';
 const signup = async (req, res, next) => {
     const { fullName, mobile, email, password, confirmPassword, role } = req.body
 
@@ -67,7 +68,47 @@ const signup = async (req, res, next) => {
 const getProfile = (req, res) => {
 
 }
+const login=async(req,res,next)=>{
+    const {email,password}=req.body;
+    //Validate the incoming data
+    const userSchema=Joi.object({
+        email:Joi.string().email().trim().required(),
+        password:Joi.string().pattern(new RegExp(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+          )).required
+    })
+    const {error}=userSchema.validate(req.body);
+    if(error){
+        return next(error);
+    }
+   try{
+     //check if the user with given email exists or not 
+     const user=await User.findOne({email}).select('+password');
+     if(!user){
+         return next(new AppError('User not found',400));
+     }
+     //Check the hashed password with the database password
+     const match=await bcrypt.compare(password,user.password);
+    //if it does not match, return an error or else respond with json data
+     if(!match){
+        return next(new AppError('Password does not match. Try again!!'));
+     }
+     res.status(200).json({
+        success:'true',
+        message:"User logged in succesfully",
+        user
+     })
+
+    
+   
+ 
+   }catch(error){
+
+   }
+
+}
 export { 
     signup,
-    getProfile
+    getProfile,
+    login
  }
