@@ -3,6 +3,7 @@ import connectToDB from './config/DBConnect.js';
 import app from './app.js';
 import {v2 as cloudinary} from 'cloudinary';
 const PORT = process.env.PORT || 5001;
+console.log(process.env.ACCESS_TOKEN_SECRET);
 
 cloudinary.config({
     cloud_name: 'dacafjeag',
