@@ -22,6 +22,8 @@ const signup = async (req, res, next) => {
         return next(error);
     }
     
+  
+
     const userExists = await User.findOne({email})
 
     if (userExists) {
