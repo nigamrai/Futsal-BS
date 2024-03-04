@@ -3,6 +3,8 @@ import AppError from "../utils/errorUtil.js";
 import cloudinary from "cloudinary";
 import fs from "fs/promises";
 import bcrypt from "bcrypt";
+import JwtService from "../utils/JwtUtil.js";
+
 import Joi from "joi";
 
 const signup = async (req, res, next) => {
@@ -20,6 +22,8 @@ const signup = async (req, res, next) => {
         return next(error);
     }
     
+  
+
     const userExists = await User.findOne({email})
 
     if (userExists) {
@@ -75,7 +79,7 @@ const signup = async (req, res, next) => {
     })
 }
 const getProfile = (req, res) => {
-
+   
 }
 const login=async(req,res,next)=>{
     const {email,password}=req.body;
@@ -84,7 +88,7 @@ const login=async(req,res,next)=>{
         email:Joi.string().email().trim().required(),
         password:Joi.string().pattern(new RegExp(
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-          )).required
+          )).required()
     })
     const {error}=userSchema.validate(req.body);
     if(error){
@@ -102,17 +106,18 @@ const login=async(req,res,next)=>{
      if(!match){
         return next(new AppError('Password does not match. Try again!!'));
      }
+     const {accessToken,refreshToken}=JwtService.generateTokens({
+        _id:user._id,
+        activated:false
+     })
+     await JwtService.storeRefreshToken(refreshToken,user._id);
      res.status(200).json({
         success:'true',
         message:"User logged in succesfully",
-        user
+        accessToken
      })
-
-    
-   
- 
    }catch(error){
-
+        return next(error);
    }
 
 }
