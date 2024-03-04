@@ -23,12 +23,7 @@ const userSchema = new Schema({
         unique: true,
         lowercase: true,
         unique: [true, 'already registered'],
-        trim: true,
-        match: [
-            /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-            'Please fill in a valid email address',
-        ]
-
+        trim: true
     },
     password: {
         type: 'String',
