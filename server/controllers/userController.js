@@ -8,7 +8,41 @@ import JwtService from "../utils/JwtUtil.js";
 const signup = async (req, res, next) => {
     const { fullName, mobile, email, password, confirmPassword, role } = req.body
 
+    if (!fullName || !mobile || !email || !password || !confirmPassword || !role) {
+        return next(new AppError('ALL fields  are required', 400));
+    }
+    //check the length name
+    //mobile length
+    //validate email 
+    //check the password with confirmPassword
     
+    if(fullName.length<5){
+        return next(new AppError('Your Name must be greater than 5',400))
+    }
+
+    if(!mobile.match('/^[\+]?[+]?[0-9]{3}[-]?[0-9]{10}$/')){
+        return next(new AppError("Number not valid",400)) 
+    }
+
+    if(!email.match(
+        '/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/'
+    )){
+        return next(new AppError('Email not valid',400));
+    }
+    if(password.match('/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/')){
+        return next(new AppError("Password not valid",400));
+    }
+    const registerSchema=Joi.object({
+        fullName:Joi.string().min(5).max(50).trim().required(),
+        mobile:Joi.string().pattern(new RegExp(/^[\+]?[+]?[0-9]{3}[-]?[0-9]{10}$/)).required().unique(),
+        email:Joi.string().pattern().unique().required(),
+        password:Joi.string().pattern().required(),
+        cons
+    })
+    if(password!==confirmPassword){
+        return next(new AppError('Password does not match',400))
+    }
+
     const userExists = await User.findOne({email})
 
     if (userExists) {
