@@ -10,12 +10,13 @@ import Joi from "joi";
 const signup = async (req, res, next) => {
     const { fullName, mobile, email, password, confirmPassword, role } = req.body
 
-    const registerSchema = joi.object({
+    const registerSchema = Joi.object({
         fullName:Joi.string().min(5).max(50).trim().required(),
-        mobile:Joi.string().pattern(new RegExp(/^[\+]?[+]?[0-9]{3}[-]?[0-9]{10}$/)).required().unique(),
-        email:Jai.string().pattern(new RegExp('/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/')).required().unique(),
-        password:Joi.string().pattern(new RegExp(/^[a-zA-Z0-9!@#$%^&*]{6,16}$/)).required(),
-        confirmPassword:Joi.ref('password')
+        mobile:Joi.string().required(),
+        email:Joi.string().email().required(),
+        password:Joi.string().pattern(new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)).required(),
+        confirmPassword:Joi.ref('password'),
+        role:Joi.string().required()
     })
     const {error} = registerSchema.validate(req.body);
     if(error){
@@ -24,11 +25,16 @@ const signup = async (req, res, next) => {
     
   
 
-    const userExists = await User.findOne({email})
+    const emailExists = await User.findOne({email})
 
-    if (userExists) {
+    if (emailExists) {
         return next(new AppError('Email already exists', 400));
     }
+    const numberExists=await User.findOne({mobile});
+    if(numberExists){
+        return next(new AppError('Number already exists'),400);
+    }
+    
 
     const hashedPassword = await bcrypt.hash(password,10);
     const user = await User.create({
@@ -58,7 +64,7 @@ const signup = async (req, res, next) => {
                 fs.rm(`uploads/${req.file.filename}`);
             }
         } catch (error) {
-          return next(new AppError('fila not uploaded', 400));
+          return next(new AppError('file not uploaded', 400));
         }
     }
     console.log(user);
