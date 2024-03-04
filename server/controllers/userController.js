@@ -8,8 +8,7 @@ import JwtService from "../utils/JwtUtil.js";
 const signup = async (req, res, next) => {
     const { fullName, mobile, email, password, confirmPassword, role } = req.body
 
-   
-
+    
     const userExists = await User.findOne({email})
 
     if (userExists) {
@@ -47,7 +46,7 @@ const signup = async (req, res, next) => {
           return next(new AppError('fila not uploaded', 400));
         }
     }
-    
+    console.log(user);
 
     if (!user) {
         return next(AppError('User signup failed please try again', 400))
