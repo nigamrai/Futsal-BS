@@ -3,14 +3,23 @@ import AppError from "../utils/errorUtil.js";
 import cloudinary from "cloudinary";
 import fs from "fs/promises";
 import bcrypt from "bcrypt";
-import Joi from 'joi';
+import Joi from "joi";
+
 const signup = async (req, res, next) => {
     const { fullName, mobile, email, password, confirmPassword, role } = req.body
 
-    if (!fullName || !mobile || !email || !password || !confirmPassword || !role) {
-        return next(new AppError('ALL fields  are required', 400));
+    const registerSchema = joi.object({
+        fullName:Joi.string().min(5).max(50).trim().required(),
+        mobile:Joi.string().pattern(new RegExp(/^[\+]?[+]?[0-9]{3}[-]?[0-9]{10}$/)).required().unique(),
+        email:Jai.string().pattern(new RegExp('/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/')).required().unique(),
+        password:Joi.string().pattern(new RegExp(/^[a-zA-Z0-9!@#$%^&*]{6,16}$/)).required(),
+        confirmPassword:Joi.ref('password')
+    })
+    const {error} = registerSchema.validate(req.body);
+    if(error){
+        return next(error);
     }
-
+    
     const userExists = await User.findOne({email})
 
     if (userExists) {
