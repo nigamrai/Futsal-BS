@@ -14,6 +14,9 @@ function Login(){
             [name]:value
         })
     }
+    function login(){
+        
+    }
     return <div className="h-screen bg-[#0A7116] w-full p-12">
             <div className="bg-[#F0F2F5] w-[1450px] h-[650px] rounded-xl border-8 border-[#50A637] flex justify-evenly items-center gap-20 px-20">
                 <div className="flex flex-col gap-2 ">
@@ -21,7 +24,7 @@ function Login(){
                     <h1 className='text-4xl font-bold w-[300px]'>Rave Futsal Booking System</h1>
                 </div>
                 <div>
-                    <form className='bg-[#FEFAFA]  w-[400px] h-[300px] rounded-md pt-8 flex flex-col items-center gap-6'>
+                    <form className='bg-[#FEFAFA]  w-[400px] h-[300px] rounded-md pt-8 flex flex-col items-center gap-6' onSubmit={login}>
                         <div className='flex flex-col justify-center items-center gap-2 '>
                         <div>
                             <input 
