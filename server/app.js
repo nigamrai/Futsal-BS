@@ -1,9 +1,9 @@
-import express from 'express';
 import cors from 'cors';
-import userRouter from './router/userRouter.js';
-import connectToDB from './config/DBConnect.js'
+import express from 'express';
 import morgan from 'morgan';
+import connectToDB from './config/DBConnect.js';
 import errorMiddleware from './middlewares/errorMiddleware.js';
+import userRouter from './router/userRouter.js';
 
 
 connectToDB;
@@ -12,7 +12,8 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-    origin: [process.env.FRONTEND_URL]
+    origin: 'http://localhost:5173',
+    credentials:true
 }))
 
 app.use(morgan('dev'));
