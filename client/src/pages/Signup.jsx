@@ -15,6 +15,9 @@ function Signup() {
             [name]:value
         })
     }
+    function createNewAccount() {
+        
+    }
   return (
     <div className="h-screen bg-[#0A7116] w-full p-10">
       <div className="bg-[#F0F2F5] w-[1285px] h-[575px] rounded-2xl border-8 border-[#50A637] flex justify-around items-center gap-20">
@@ -24,7 +27,7 @@ function Signup() {
             <b>Rave Futsal Booking System</b>
           </p>
         </div>
-        <div className="bg-[#FEFCFC] h-[450px] w-[440px] rounded-xl">
+        <form className="bg-[#FEFCFC] h-[450px] w-[440px] rounded-xl" onSubmit={createNewAccount}>
           <div className="flex flex-col items-center gap-2 pt-8">
             <div>
               <input
@@ -101,7 +104,7 @@ function Signup() {
               <button className="text-[#1877F2] font-bold ml-1">Login</button>
             </p>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
