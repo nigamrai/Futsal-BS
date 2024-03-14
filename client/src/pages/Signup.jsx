@@ -15,6 +15,7 @@ function Signup() {
             [name]:value
         })
     }
+    //form function
     function createNewAccount() {
         
     }
