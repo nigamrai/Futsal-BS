@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/images/Logo.png";
-import { login } from "../redux/slices/authSlices";
+import { login } from "../redux/slices/authSlices"; //HELLOnIGAM
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
