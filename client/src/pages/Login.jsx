@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/images/Logo.png";
-import { login } from "../redux/slices/authSlices"; //HELLOnIGAM
+import { login } from "../redux/slices/authSlices";
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ function Login() {
       toast.error("All fields are required");
       return;
     }
-    if (!loginData.email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+    if (!loginData.email.match(/^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/)) {
       toast.error("Invalid email format");
       return;
     }

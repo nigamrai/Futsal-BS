@@ -48,25 +48,7 @@ const signup = async (req, res, next) => {
         },
         role
     });
-    if (req.file) {
-        try{
-            const result = await cloudinary.v2.uploader.upload(req.file.path, {
-                folder: "FBS",
-                width: 250,
-                height:250,
-                gravity: "face",
-                crop: "fill",
-            });
-            if (result) {
-                user.avatar.public_id = result.public_id;
-                user.avatar.secure_url = result.secure_url;
-                //remove file from server
-                fs.rm(`uploads/${req.file.filename}`);
-            }
-        } catch (error) {
-          return next(new AppError('file not uploaded', 400));
-        }
-    }
+
     console.log(user);
 
     if (!user) {
