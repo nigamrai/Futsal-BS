@@ -31,14 +31,6 @@ const userSchema = new Schema({
         minLength: [8, 'Password must be at least 8 characters'],
         select: false
     },
-    avatar: {
-        public_id: {
-            type: 'String'
-        },
-        secure_url: {
-            type: 'String'
-        }
-    },
     role: {
         type: 'String',
         enum:["USER","ADMIN","FUTSAL"],

@@ -1,10 +1,19 @@
 import { useState } from "react";
 import Logo from "../assets/images/Logo.png";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { toast } from 'react-hot-toast';
+import { createAccount } from "../redux/slices/authSlices";
+
 function Signup() {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
     const [signupData, setSignupData] = useState({
-        fullname:"",
-        phoneNumber:"",
-        emailAddress:"",
+        fullName:"",
+        mobile:"",
+        email:"",
         password:"",
         confirmPassword:"",
     })
@@ -15,10 +24,62 @@ function Signup() {
             [name]:value
         })
     }
-    //form function
-    function createNewAccount() {
-        
+    async function createNewAccount(event) {
+      event.preventDefault();
+      if(!signupData.fullName || !signupData.mobile || !signupData.email|| !signupData.password || !signupData.confirmPassword) {
+        toast.error("Please fill all the details");
+        return;
+      }
+
+      if(signupData.fullName.length < 5 || signupData.fullName.length > 50) {
+        toast.error("Your name should be atleast less than 50 and greather than 5");
+        return;
+      }
+
+      if(signupData.mobile.length < 10){
+        toast.error("Your Phone Number be less than 10 numbers");
+        return;        
+      }
+
+      if(!signupData.email.match(/^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/)) {
+        toast.error("Invalid email format");
+        return;
+      }
+
+      if(!signupData.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)) {
+        toast.error("Password must have minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character");
+        return;
+      }
+
+      if(signupData.confirmPassword !==signupData.password){
+        toast.error("Your confirmPassward does not match with password");
+        return;
+      }
+
+      // const formData = new FormData();
+      // formData.append("fullName", signupData.fullName);
+      // formData.append("phoneNumber", signupData.mobile);
+      // formData.append("email", signupData.email);
+      // formData.append("pasword", signupData.password);
+      // formData.append("confirmPassword", signupData.confirmPassword);
+
+      //dispatch create account
+
+      const response = await dispatch(createAccount(signupData));
+      if(response?.payload?.success){
+    
+      navigate("/");
+
+      setSignupData({
+        fullName:"",
+        mobile:"",
+        email:"",
+        password:"",
+        confirmPassword:"",        
+      });
     }
+    }
+
   return (
     <div className="h-screen bg-[#0A7116] w-full p-10">
       <div className="bg-[#F0F2F5] w-[1285px] h-[575px] rounded-2xl border-8 border-[#50A637] flex justify-around items-center gap-20">
@@ -33,31 +94,34 @@ function Signup() {
             <div>
               <input
                 className="w-[400px] h-[35px]  border-[1px] border-black rounded p-3"
-                name="fullname"
+                name="fullName"
                 onChange={handleUserInput}
                 type="text"
+                required
                 placeholder="Full name"
-                value={signupData.fullname}
+                value={signupData.fullName}
               />
             </div>
             <div>
               <input
                 className="w-[400px] h-[35px]  border-[1px] border-black rounded p-3"
-                name="phoneNumber"
+                name="mobile"
                 onChange={handleUserInput}
-                type="tel"
+                type="text"
+                required
                 placeholder="Phone number"
-                value={signupData.phoneNumber}
+                value={signupData.mobile}
               />
             </div>
             <div>
               <input
                 className="w-[400px] h-[35px]  border-[1px] border-black rounded p-3"
-                name="emailAddress"
+                name="email"
                 onChange={handleUserInput}
                 type="email"
+                required
                 placeholder="Email address"
-                value={signupData.emailAddress}
+                value={signupData.email}
               />
             </div>
             <div>
@@ -65,7 +129,8 @@ function Signup() {
                 className="w-[400px] h-[35px]  border-[1px] border-black rounded p-3"
                 name="password"
                 onChange={handleUserInput}
-                type="text"
+                type="password"
+                required
                 placeholder="Password"
                 value={signupData.password}
               />
@@ -75,7 +140,8 @@ function Signup() {
                 className="w-[400px] h-[35px] border-[1px] border-black rounded p-3"
                 name="confirmPassword"
                 onChange={handleUserInput}
-                type="text"
+                type="password"
+                required
                 placeholder="Confirm password"
                 value={signupData.confirmPassword}
               />
@@ -102,7 +168,7 @@ function Signup() {
 
             <p className="ml-[80px] mt-[10px]">
               Already have an account?
-              <button className="text-[#1877F2] font-bold ml-1">Login</button>
+              <Link to="/login" className="text-[#1877F2] font-bold ml-1">Login</Link>
             </p>
           </div>
         </form>
