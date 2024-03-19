@@ -3,6 +3,7 @@ import express from 'express';
 import morgan from 'morgan';
 import connectToDB from './config/DBConnect.js';
 import errorMiddleware from './middlewares/errorMiddleware.js';
+import futsalRouter from './router/futsalRouter.js';
 import userRouter from './router/userRouter.js';
 
 
@@ -19,6 +20,7 @@ app.use(cors({
 app.use(morgan('dev'));
 
 app.use('/api/user', userRouter);
+app.use('/api/futsal',futsalRouter);
 
 app.use('/ping', function(req, res){
     res.send('/pong');
