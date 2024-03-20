@@ -87,9 +87,9 @@ function Signup() {
       <div className="bg-[#F0F2F5] w-[1285px] h-[575px] rounded-2xl border-8 border-[#50A637] flex justify-around items-center gap-20">
         <div className="flex flex-col gap-2 ">
           <img src={Logo} className="w-[200px]" />
-          <p className="text-3xl w-[300px]">
-            <b>Bhatbhateni Futsal Booking System</b>
-          </p>
+          <h1 className="text-4xl text-black font-bold w-[350px] ">
+            Bhatbhateni Futsal Booking System
+          </h1>
         </div>
         <form className="bg-[#FEFCFC] h-[450px] w-[440px] rounded-xl" onSubmit={createNewAccount}>
           <div className="flex flex-col items-center gap-2 pt-8">

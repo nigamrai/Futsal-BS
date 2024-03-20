@@ -52,7 +52,7 @@ function Login() {
       <div className="bg-[#F0F2F5] w-[1450px] h-[650px] rounded-xl border-8 border-[#50A637] flex justify-evenly items-center gap-20 px-20">
         <div className="flex flex-col gap-2 ">
           <img src={logo} className="w-[200px]" />
-          <h1 className="text-4xl font-bold w-[300px]">
+          <h1 className="text-4xl text-black font-bold w-[400px] ">
             Bhatbhateni Futsal Booking System
           </h1>
         </div>

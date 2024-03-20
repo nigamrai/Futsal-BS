@@ -1,9 +1,7 @@
-import User from "../models/userModel.js";
-import AppError from "../utils/errorUtil.js";
-import cloudinary from "cloudinary";
-import fs from "fs/promises";
 import bcrypt from "bcrypt";
+import User from "../models/userModel.js";
 import JwtService from "../utils/JwtUtil.js";
+import AppError from "../utils/errorUtil.js";
 
 import Joi from "joi";
 
@@ -42,10 +40,6 @@ const signup = async (req, res, next) => {
         mobile,
         email,
         password: hashedPassword,
-        avatar: {
-            public_id: email,
-            secure_url: 'https://en.wikipedia.org/wiki/Image#/media/File:Image_created_with_a_mobile_phone.png' 
-        },
         role
     });
 
@@ -55,7 +49,7 @@ const signup = async (req, res, next) => {
         return next(AppError('User signup failed please try again', 400))
     }
     
-    await user.save();
+    
 
     user.password = undefined;
 
@@ -109,8 +103,8 @@ const login=async(req,res,next)=>{
    }
 
 }
-export { 
-    signup,
+export {
     getProfile,
-    login
- }
+    login, signup
+};
+
