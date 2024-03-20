@@ -53,7 +53,7 @@ function Login() {
         <div className="flex flex-col gap-2 ">
           <img src={logo} className="w-[200px]" />
           <h1 className="text-4xl font-bold w-[300px]">
-            Rave Futsal Booking System
+            Bhatbhateni Futsal Booking System
           </h1>
         </div>
         <div>

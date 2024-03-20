@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Logo from "../assets/images/Logo.png";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { toast } from 'react-hot-toast';
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import Logo from "../assets/images/Logo.png";
 import { createAccount } from "../redux/slices/authSlices";
 
 function Signup() {
@@ -16,6 +16,7 @@ function Signup() {
         email:"",
         password:"",
         confirmPassword:"",
+        role:"USER"
     })
     function handleUserInput(e){
         const {name, value}=e.target;
@@ -26,7 +27,8 @@ function Signup() {
     }
     async function createNewAccount(event) {
       event.preventDefault();
-      if(!signupData.fullName || !signupData.mobile || !signupData.email|| !signupData.password || !signupData.confirmPassword) {
+      
+      if(!signupData.fullName || !signupData.mobile || !signupData.email|| !signupData.password || !signupData.confirmPassword || !signupData.role) {
         toast.error("Please fill all the details");
         return;
       }
@@ -85,8 +87,8 @@ function Signup() {
       <div className="bg-[#F0F2F5] w-[1285px] h-[575px] rounded-2xl border-8 border-[#50A637] flex justify-around items-center gap-20">
         <div className="flex flex-col gap-2 ">
           <img src={Logo} className="w-[200px]" />
-          <p className="text-3xl w-[250px]">
-            <b>Rave Futsal Booking System</b>
+          <p className="text-3xl w-[300px]">
+            <b>Bhatbhateni Futsal Booking System</b>
           </p>
         </div>
         <form className="bg-[#FEFCFC] h-[450px] w-[440px] rounded-xl" onSubmit={createNewAccount}>
