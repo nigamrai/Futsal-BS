@@ -49,7 +49,7 @@ function Signup() {
       }
 
       if(!signupData.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)) {
-        toast.error("Password must have minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character");
+        toast.error("Password must have minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character");
         return;
       }
 
