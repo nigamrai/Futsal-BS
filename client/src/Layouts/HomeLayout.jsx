@@ -3,7 +3,7 @@ import Footer from '../Components/Footer';
 import logo from '../assets/images/Logo.png';
 
 function HomeLayout({children}) {
- 
+  
   return (
     <div className="min-h-[90vh]  bg-[#0A7116] ">
         <header className='flex justify-between items-center py-4 px-[100px]'>

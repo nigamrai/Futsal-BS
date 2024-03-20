@@ -10,13 +10,11 @@ export const futsalDetails=createAsyncThunk('/futsal/getDetails',async()=>{
         const res=axiosInstance.post('/futsal/getDetails');
         toast.promise(res,{
             loading:"Waiting to fetch futsal Data",
-            success:(data)=>{
-                return data?.data?.message
-            },
+            success:"Futsal data loaded successfully",
             error:"Failed to fetch futsal details"
-
         })
-        return (await res).data
+        console.log((await res).data.futsal);
+        return (await res).data.futsal
     }catch(error){
         return error?.response?.data?.message
     }
@@ -28,7 +26,9 @@ const futsalSlice=createSlice({
     extraReducers:(builder)=>{
         builder
         .addCase(futsalDetails.fulfilled,(state,action)=>{
-            state.futsalData=[...action.payload];
+            if(action?.payload){
+                state.futsalData=[action.payload];
+            }
         })
     }
 })
