@@ -60,6 +60,7 @@ const signup = async (req, res, next) => {
     user,
   });
 };
+
 const getProfile = (req, res) => {};
 const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -87,22 +88,25 @@ const login = async (req, res, next) => {
     //Check the hashed password with the database password
     const match = await bcrypt.compare(password, user.password);
     //if it does not match, return an error or else respond with json data
-    if (!match) {
-      return next(new AppError("Password does not match. Try again!!"));
-    }
-    const { accessToken, refreshToken } = JwtService.generateTokens({
-      _id: user._id,
-      activated: false,
-    });
-    await JwtService.storeRefreshToken(refreshToken, user._id);
-    res.status(200).json({
-      success: "true",
-      message: "User logged in succesfully",
-      accessToken,
-    });
-  } catch (error) {
-    return next(error);
-  }
-};
-export { getProfile, login, signup };
+     if(!match){
+        return next(new AppError('Password does not match. Try again!!'));
+     }
+     const {accessToken,refreshToken}=JwtService.generateTokens({
+        _id:user._id,
+        activated:false
+     })
+     await JwtService.storeRefreshToken(refreshToken,user._id);
+     res.status(200).json({
+        success:'true',
+        message:"User logged in succesfully",
+        accessToken
+     })
+   }catch(error){
+        return next(error);
+   }
 
+}
+export {
+    getProfile,
+    login, signup
+};

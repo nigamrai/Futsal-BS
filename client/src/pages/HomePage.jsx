@@ -75,8 +75,8 @@ function HomePage() {
           Details
         </p>
       </div>
-      <div className="mt-[25px]">
-        <div className="bg-[#FFFFFF] w-[600px] ml-[15px] h-[500px] flex-col">
+      <div className="mt-[25px] flex justify-center items-center gap-[30px]">
+        <div className="bg-[#FFFFFF] w-[620px] ml-[15px] h-[500px] flex-col">
           <p className="text-center text-black text-4xl font-bold p-[35px]">
             Basic Details:
           </p>
@@ -89,16 +89,22 @@ function HomePage() {
               <p className="underline-offset-8">Status:</p>
             </div>
             <div className="text-[black]">
-              <p className="underline-offset-1">Kapan</p>
-              <p className="underline-offset-2">Rs.1200</p>
+              <p className="underline-offset-1">{futsalData.map((futsal)=>futsal.futsalAddress)}</p>
+              <p className="underline-offset-2">{futsalData.map((futsal)=>futsal.futsalPrice.day)}</p>
               <p className="underline-offset-4">
                 {futsalData.map((futsal) => futsal.futsalOpeningTime)}
               </p>
-              <p className="underline-offset-8">9 pm</p>
-              <p className="underline-offset-8">Open</p>
+              <p className="underline-offset-8">{futsalData.map((futsal)=>futsal.futsalClosingTime)}</p>
+              <p className="underline-offset-8">{futsalData.map((futsal)=>futsal.futsalOpenStatus)}</p>
             </div>
           </div>
         </div>
+            <div className="overflow-hidden relative absolute">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3531.941484331196!2d85.35038037434086!3d27.719092924975328!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1962d1d5d6bf%3A0x43fcef9e567f899f!2sBhat-Bhateni%20Super%20Store%20Boudha%20Chuchepati!5e0!3m2!1sen!2snp!4v1711008771566!5m2!1sen!2snp" width="600" height="500" allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+        <div className="">
+            <p className="text-center text-white text-5xl font-bold mt-[25px]">Booking</p>
       </div>
       <div className="text-center text-4xl text-white py-12 font-semibold">
         Booking
