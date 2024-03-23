@@ -63,6 +63,7 @@ const signup = async (req, res, next) => {
         user
     })
 }
+
 const getProfile = (req, res) => {
    
 }
@@ -106,8 +107,59 @@ const login=async(req,res,next)=>{
    }
 
 }
+
+const  getUserDetails= async(req, res, next) => {
+    try{ 
+        const users = await User.find({});
+        if(!users) {
+            return next(
+                new AppError('No any users', 400)
+            )
+        }
+
+        res.status(200).json({
+            sucess: true,
+            message: 'Users Details fetched successfully',
+            users
+        })
+
+    }catch(e){
+        return next(
+            new AppError(e.message, 500)
+         )
+
+    }        
+}
+
+//delete case
+const removeUsers = async (req, res, next) => {
+    try{
+        
+        const users = await User.find({});
+        if(!users){
+            return next(
+                new AppError('Course with given id doesnot exist', 500)
+            )
+        }
+
+        await user.findByIdAndDelete(id);  //course delete part
+
+        res.status(200).json({
+            success: true,
+            message: 'Course deleted successfully',
+            users
+        })
+
+    }catch(e){
+        return next(
+            new AppError(e.message, 500)
+        )
+    }
+}
 export { 
     signup,
     getProfile,
-    login
+    login,
+    getUserDetails,
+    removeUsers
  }

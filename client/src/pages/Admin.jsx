@@ -24,7 +24,7 @@ function Admin(){
                     </div>
                 </div>
             </div>
-            <div className='bg-[#F3F2F2] h-[270px] w-full flex'>
+            <div className='bg-[#F3F2F2] h-[200px] w-full flex'>
                 <div className='bg-[#43BF7F] w-[340px] h-[220px] rounded-[10px] ml-[120px] mt-[180px]'>
                     <div className='font-bold text-center mt-[40px]'>
                     <Link to="" className='text-white text-3xl'>Total User</Link>
