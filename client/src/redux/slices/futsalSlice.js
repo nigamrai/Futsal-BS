@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import toast from "react-hot-toast";
 import axiosInstance from "../../Helpers/axiosInstance";
 
 const initialState={
@@ -8,11 +7,7 @@ const initialState={
 export const futsalDetails=createAsyncThunk('/futsal/getDetails',async()=>{
     try{
         const res=axiosInstance.post('/futsal/getDetails');
-        toast.promise(res,{
-            loading:"Waiting to fetch futsal Data",
-            success:"Futsal data loaded successfully",
-            error:"Failed to fetch futsal details"
-        })
+       
         console.log((await res).data.futsal);
         return (await res).data.futsal
     }catch(error){

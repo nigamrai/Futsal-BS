@@ -5,7 +5,7 @@ function Footer(){
     const currentDate=new Date();
     const year=currentDate.getFullYear();
     const {futsalData}=useSelector((state)=>state?.futsal);
-    return <footer className='text-[#FFDC58] relative left-0 bottom-0 px-[100px]'>
+    return <footer className='text-[#FFDC58] relative left-0 bottom-0 px-[100px] py-12'>
         <div className='flex justify-between font-semibold mb-4'>
             <img src={logo} className='w-[150px] h-[60px]' alt="logo"/>
             <ul>
