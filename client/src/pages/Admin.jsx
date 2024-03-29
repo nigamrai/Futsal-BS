@@ -20,7 +20,7 @@ function Admin(){
                     </div>
                     <div className='flex gap-[80px] mt-[120px]'>
                         <FaUserSecret size={50} className='text-white'/>
-                        <Link to="/futsal" className='text-white text-3xl'>Futsal</Link>
+                       <Link to="/futsal" className='text-white text-3xl'>Futsal</Link>
                     </div>
                 </div>
             </div>

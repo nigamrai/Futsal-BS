@@ -22,6 +22,8 @@ app.use(morgan('dev'));
 app.use('/api/user', userRouter);
 app.use('/api/futsal',futsalRouter);
 
+
+
 app.use('/ping', function(req, res){
     res.send('/pong');
 });

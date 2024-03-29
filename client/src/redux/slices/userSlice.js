@@ -20,6 +20,21 @@ export const userDetails=createAsyncThunk('/user/getDetails',async()=>{
         return error?.response?.data?.message
     }
 })
+export const deleteUser=createAsyncThunk("/user/delete",async(userId)=>{
+    try{
+        const res=axiosInstance.put(`/user/removeUser/${userId}`);
+        toast.promise(res,{
+            loading:"Waiting to delete user",
+            success:(data)=>{
+                return data?.data?.message
+            },
+            error:"Failed to delete user"
+        })
+        return (await res).data;
+    }catch(error){
+        toast.error(error?.response.data?.message);
+    }
+})
 const userSlice=createSlice({
     name:'user',
     initialState,
