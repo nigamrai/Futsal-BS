@@ -32,27 +32,7 @@ const signup = async (req, res, next) => {
   }
 
   const emailExists = await User.findOne({ email });
-  const registerSchema = Joi.object({
-    fullName: Joi.string().min(5).max(50).trim().required(),
-    mobile: Joi.string().required(),
-    email: Joi.string().email().required(),
-    password: Joi.string()
-      .pattern(
-        new RegExp(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-        )
-      )
-      .required(),
-    confirmPassword: Joi.ref("password"),
-    role: Joi.string().required(),
-  });
-  const { error } = registerSchema.validate(req.body);
-  if (error) {
-    return next(error);
-  }
-
-  const emailExists = await User.findOne({ email });
-
+  
   if (emailExists) {
     return next(new AppError("Email already exists", 400));
   }
@@ -69,10 +49,6 @@ const signup = async (req, res, next) => {
     password: hashedPassword,
     role,
   });
-
-  console.log(user);
-  console.log(user);
-
   if (!user) {
     return next(AppError("User signup failed please try again", 400));
   }
