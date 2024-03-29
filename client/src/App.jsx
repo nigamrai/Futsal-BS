@@ -3,7 +3,6 @@ import Admin from "./pages/Admin";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Admin from "./pages/Admin";
 import User from "./pages/User";
 import Futsal from "./pages/Futsal";
 import FutsalAdmin from "./pages/FutsalAdmin";
