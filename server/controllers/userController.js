@@ -1,15 +1,37 @@
-import User from "../models/userModel.js";
-import AppError from "../utils/errorUtil.js";
-import cloudinary from "cloudinary";
-import fs from "fs/promises";
 import bcrypt from "bcrypt";
+import User from "../models/userModel.js";
 import JwtService from "../utils/JwtUtil.js";
+import AppError from "../utils/errorUtil.js";
 
 import Joi from "joi";
-
+const cookieOptions={
+  maxAge:7*24*60*60*1000,
+  httpOnly:true,
+  secure:true
+}
 const signup = async (req, res, next) => {
   const { fullName, mobile, email, password, confirmPassword, role } = req.body;
 
+  const registerSchema = Joi.object({
+    fullName: Joi.string().min(5).max(50).trim().required(),
+    mobile: Joi.string().required(),
+    email: Joi.string().email().required(),
+    password: Joi.string()
+      .pattern(
+        new RegExp(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+        )
+      )
+      .required(),
+    confirmPassword: Joi.ref("password"),
+    role: Joi.string().required(),
+  });
+  const { error } = registerSchema.validate(req.body);
+  if (error) {
+    return next(error);
+  }
+
+  const emailExists = await User.findOne({ email });
   const registerSchema = Joi.object({
     fullName: Joi.string().min(5).max(50).trim().required(),
     mobile: Joi.string().required(),
@@ -45,6 +67,22 @@ const signup = async (req, res, next) => {
     mobile,
     email,
     password: hashedPassword,
+    role,
+  });
+  if (emailExists) {
+    return next(new AppError("Email already exists", 400));
+  }
+  const numberExists = await User.findOne({ mobile });
+  if (numberExists) {
+    return next(new AppError("Number already exists"), 400);
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = await User.create({
+    fullName,
+    mobile,
+    email,
+    password: hashedPassword,
 
     role,
   });
@@ -66,6 +104,32 @@ const signup = async (req, res, next) => {
   });
 };
 
+const getProfile = (req, res) => {};
+const login = async (req, res, next) => {
+  const { email, password } = req.body;
+  //Validate the incoming data
+  const userSchema = Joi.object({
+    email: Joi.string().email().trim().required(),
+    password: Joi.string()
+      .pattern(
+        new RegExp(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+        )
+      )
+      .required(),
+  });
+  const { error } = userSchema.validate(req.body);
+  if (error) {
+    return next(error);
+  }
+  try {
+    //check if the user with given email exists or not
+    const user = await User.findOne({ email }).select("+password");
+    if (!user) {
+      return next(new AppError("User not found", 400));
+    }
+    //Check the hashed password with the database password
+    const match = await bcrypt.compare(password, user.password);
 const getProfile = (req, res) => {};
 const login = async (req, res, next) => {
   const { email, password } = req.body;

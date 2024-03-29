@@ -44,7 +44,7 @@ function Login() {
         email: "",
         password: "",
       });
-      navigate("/signup");
+      navigate("/home");
     }
   }
   return (

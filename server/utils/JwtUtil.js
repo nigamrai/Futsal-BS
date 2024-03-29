@@ -1,5 +1,5 @@
+import { } from 'dotenv/config';
 import jwt from "jsonwebtoken";
-import {} from 'dotenv/config'
 import Token from "../models/token.model.js";
 
 class JwtUtil{
@@ -19,6 +19,10 @@ class JwtUtil{
             console.log(error.message);
         }
     }
+    async verifyRefreshToken(refreshToken) {
+        return jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+    }
+    
 
 }
 

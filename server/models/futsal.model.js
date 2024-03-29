@@ -52,7 +52,7 @@ const futsalSchema=new Schema({
     futsalOpenStatus:{
         type:String,
         enum:["OPEN","CLOSED"],
-        default:"CLOSED"
+        default:"OPEN"
     },
     status:{
         type:Boolean
