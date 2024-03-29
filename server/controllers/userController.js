@@ -32,6 +32,26 @@ const signup = async (req, res, next) => {
   }
 
   const emailExists = await User.findOne({ email });
+  const registerSchema = Joi.object({
+    fullName: Joi.string().min(5).max(50).trim().required(),
+    mobile: Joi.string().required(),
+    email: Joi.string().email().required(),
+    password: Joi.string()
+      .pattern(
+        new RegExp(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+        )
+      )
+      .required(),
+    confirmPassword: Joi.ref("password"),
+    role: Joi.string().required(),
+  });
+  const { error } = registerSchema.validate(req.body);
+  if (error) {
+    return next(error);
+  }
+
+  const emailExists = await User.findOne({ email });
 
   if (emailExists) {
     return next(new AppError("Email already exists", 400));
@@ -51,6 +71,7 @@ const signup = async (req, res, next) => {
   });
 
   console.log(user);
+  console.log(user);
 
   if (!user) {
     return next(AppError("User signup failed please try again", 400));
@@ -65,6 +86,32 @@ const signup = async (req, res, next) => {
   });
 };
 
+const getProfile = (req, res) => {};
+const login = async (req, res, next) => {
+  const { email, password } = req.body;
+  //Validate the incoming data
+  const userSchema = Joi.object({
+    email: Joi.string().email().trim().required(),
+    password: Joi.string()
+      .pattern(
+        new RegExp(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+        )
+      )
+      .required(),
+  });
+  const { error } = userSchema.validate(req.body);
+  if (error) {
+    return next(error);
+  }
+  try {
+    //check if the user with given email exists or not
+    const user = await User.findOne({ email }).select("+password");
+    if (!user) {
+      return next(new AppError("User not found", 400));
+    }
+    //Check the hashed password with the database password
+    const match = await bcrypt.compare(password, user.password);
 const getProfile = (req, res) => {};
 const login = async (req, res, next) => {
   const { email, password } = req.body;

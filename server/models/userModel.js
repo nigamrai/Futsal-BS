@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 const userSchema = new Schema(
   {
     fullName: {
-      type: "String",
+      type: String,
       required: [true, "user name is required"],
       minLength: [5, "Name must be at least 5 char"],
       maxLength: [50, "Name must be less than50 char"],
@@ -16,7 +16,7 @@ const userSchema = new Schema(
       trim: true,
     },
     email: {
-      type: "String",
+      type: String,
       required: [true, "user email is required"],
       unique: true,
       lowercase: true,
@@ -24,21 +24,23 @@ const userSchema = new Schema(
       trim: true,
     },
     password: {
-      type: "String",
+      type: String,
       required: [true, "Password is required"],
       minLength: [8, "Password must be at least 8 characters"],
       select: false,
     },
     role: {
-      type: "String",
+      type: String,
       enum: ["USER", "ADMIN", "FUTSAL"],
       default: "USER",
     },
-  },
-  {
-    timestamps: true,
-  }
-);
+     status:{
+    type:Boolean,
+    default:true
+  }  
+},{
+  timestamps: true,
+});
 
 const User = model("user", userSchema, "users");
 export default User;
