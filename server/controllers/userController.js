@@ -32,7 +32,11 @@ const signup = async (req, res, next) => {
   }
 
   const emailExists = await User.findOne({ email });
+<<<<<<< HEAD
   
+=======
+ 
+>>>>>>> 6e4d203f6b28c42b2c3259068f20cf1433f35190
   if (emailExists) {
     return next(new AppError("Email already exists", 400));
   }
@@ -49,18 +53,32 @@ const signup = async (req, res, next) => {
     password: hashedPassword,
     role,
   });
+<<<<<<< HEAD
+=======
+  
+  console.log(user);
+
+>>>>>>> 6e4d203f6b28c42b2c3259068f20cf1433f35190
   if (!user) {
     return next(AppError("User signup failed please try again", 400));
   }
 
+<<<<<<< HEAD
   user.password = undefined;
  
+=======
+  await user.save();
+
+  user.password = undefined;
+
+>>>>>>> 6e4d203f6b28c42b2c3259068f20cf1433f35190
   res.status(201).json({
     success: true,
     message: "user signup successfully",
     user,
   });
 };
+
 
 const getProfile = (req, res) => {};
 const login = async (req, res, next) => {
@@ -115,6 +133,7 @@ const login = async (req, res, next) => {
     //Check the hashed password with the database password
     const match = await bcrypt.compare(password, user.password);
     //if it does not match, return an error or else respond with json data
+<<<<<<< HEAD
      if(!match){
         return next(new AppError('Password does not match. Try again!!'));
      }
@@ -187,3 +206,57 @@ export {
   getProfile, getUserDetails, login, removeUsers, signup
 };
 
+=======
+    if (!match) {
+      return next(new AppError("Password does not match. Try again!!"));
+    }
+    const { accessToken, refreshToken } = JwtService.generateTokens({
+      _id: user._id,
+      activated: false,
+    });
+    await JwtService.storeRefreshToken(refreshToken, user._id);
+    res.status(200).json({
+      success: "true",
+      message: "User logged in succesfully",
+      accessToken,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const getUserDetails = async (req, res, next) => {
+  try {
+    const users = await User.find({status:true});
+    if (!users) {
+      return next(new AppError("No any users", 400));
+    }
+
+    res.status(200).json({
+      sucess: true,
+      message: "Users Details fetched successfully",
+      users,
+    });
+  } catch (e) {
+    return next(new AppError(e.message, 500));
+  }
+};
+
+//delete case
+const removeUser = async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    await User.findByIdAndUpdate(userId,{status:false});
+
+
+    res.status(200).json({
+        success:true,
+        message:"User deleted successfully"
+    }) // No content - successful deletion
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+export { signup, getProfile, login, getUserDetails, removeUser };
+>>>>>>> 6e4d203f6b28c42b2c3259068f20cf1433f35190
