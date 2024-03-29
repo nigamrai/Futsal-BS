@@ -8,10 +8,10 @@ export const futsalDetails=createAsyncThunk('/futsal/getDetails',async()=>{
     try{
         const res=axiosInstance.post('/futsal/getDetails');
        
-        console.log((await res).data.futsal);
+        // console.log((await res).data.futsal);
         return (await res).data.futsal
     }catch(error){
-        return error?.response?.data?.message
+        toast.error(error?.response?.data?.message);
     }
 })
 const futsalSlice=createSlice({

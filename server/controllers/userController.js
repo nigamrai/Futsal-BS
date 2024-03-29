@@ -4,7 +4,11 @@ import JwtService from "../utils/JwtUtil.js";
 import AppError from "../utils/errorUtil.js";
 
 import Joi from "joi";
-
+const cookieOptions={
+  maxAge:7*24*60*60*1000,
+  httpOnly:true,
+  secure:true
+}
 const signup = async (req, res, next) => {
   const { fullName, mobile, email, password, confirmPassword, role } = req.body;
 
@@ -53,7 +57,7 @@ const signup = async (req, res, next) => {
   }
 
   user.password = undefined;
-
+ 
   res.status(201).json({
     success: true,
     message: "user signup successfully",
@@ -96,9 +100,12 @@ const login = async (req, res, next) => {
         activated:false
      })
      await JwtService.storeRefreshToken(refreshToken,user._id);
+     res.cookie('token',accessToken,cookieOptions);
+
      res.status(200).json({
         success:'true',
         message:"User logged in succesfully",
+        user,
         accessToken
      })
    }catch(error){
@@ -106,7 +113,54 @@ const login = async (req, res, next) => {
    }
 
 }
+const  getUserDetails= async(req, res, next) => {
+  try{ 
+      const users = await User.find({});
+      if(!users) {
+          return next(
+              new AppError('No any users', 400)
+          )
+      }
+
+      res.status(200).json({
+          sucess: true,
+          message: 'Users Details fetched successfully',
+          users
+      })
+
+  }catch(e){
+      return next(
+          new AppError(e.message, 500)
+       )
+
+  }  
+
+}
+const removeUsers = async (req, res, next) => {
+  try{
+      
+      const users = await User.find({});
+      if(!users){
+          return next(
+              new AppError('Course with given id doesnot exist', 500)
+          )
+      }
+
+      await user.findByIdAndDelete(id);  //course delete part
+
+      res.status(200).json({
+          success: true,
+          message: 'Course deleted successfully',
+          users
+      })
+
+  }catch(e){
+      return next(
+          new AppError(e.message, 500)
+      )
+  }
+}
 export {
-    getProfile,
-    login, signup
+  getProfile, getUserDetails, login, removeUsers, signup
 };
+

@@ -11,12 +11,14 @@ export const createNewBooking=createAsyncThunk('booking/create',async(data)=>{
         const res=axiosInstance.post('/booking/create',data);
         toast.promise(res,{
             loading:'Waiting to book',
-            success:"Succesfully booked",
+            success:(data)=>{
+                return data?.data?.message;
+            },
             error:"Failed to book"
         })
         return (await res).data.booked
     }catch(error){
-        return error?.response?.data?.message
+        toast.error(error?.response?.data?.message)
     }
 })
 export const getAllBookings=createAsyncThunk('booking/getBookings',async(data)=>{
@@ -31,7 +33,7 @@ export const getAllBookings=createAsyncThunk('booking/getBookings',async(data)=>
         })
         return (await res).data.bookings;
     }catch(error){
-        return error?.response?.data?.message;
+        toast.error(error?.response?.data?.message);
     }
 })
 const bookingSlice=createSlice({

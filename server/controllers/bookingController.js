@@ -2,13 +2,14 @@ import Joi from "joi";
 import Booking from "../models/booking.model.js";
 import AppError from '../utils/errorUtil.js';
 const newBooking=async(req,res,next)=>{
-    const{date,day,time,duration,phoneNumber}=req.body;
+    const{date,day,time,duration,phoneNumber,userId}=req.body;
     const bookingSchema=Joi.object({
         date:Joi.string().required(),
         day:Joi.string().required(),
-        time:Joi.number().required(),
+        time:Joi.string().required(),
         duration:Joi.number().required(),
-        phoneNumber:Joi.string().min(10).max(14).required()
+        phoneNumber:Joi.string().min(10).max(14).required(),
+        
     })
     const {error}=bookingSchema.validate(req.body);
     if(error){
@@ -24,7 +25,8 @@ const newBooking=async(req,res,next)=>{
         day,
         time,
         duration,
-        phoneNumber
+        phoneNumber,
+        userId
     })
     res.status(200).json({
         success:true,
@@ -34,7 +36,7 @@ const newBooking=async(req,res,next)=>{
 }
 const getBookings=async(req,res,next)=>{
     try{
-        const bookings=await Booking.find({});
+        const bookings=await Booking.find({status:true});
         if(!bookings){
             return next(new AppError('No data',400))
         }
@@ -43,7 +45,7 @@ const getBookings=async(req,res,next)=>{
             message:"All bookings fetched successfully",
             bookings
         })
-    }catch(error){
+    }catch(error){  
         return next(error);
     }
 }

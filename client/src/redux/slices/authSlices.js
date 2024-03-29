@@ -2,11 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 import axiosInstance from "../../Helpers/axiosInstance";
 
-const initialState = {
-    isLoggedIn:localStorage.getItem('isLoggedIn') || false,
-    role: localStorage.getItem('role') || '',
-    data: localStorage.getItem==undefined?JSON.parse(localStorage.getItem("data")):{} || {}
-
+const initialState={
+    isLoggedIn:localStorage.getItem('isLoggedIn')||false,
+    role:localStorage.getItem('role')|| '',
+    data:localStorage.getItem==undefined?JSON.parse(localStorage.getItem("data")):{} || {}
 }
 export const login=createAsyncThunk('auth/login',async(data)=>{
     try{
@@ -20,7 +19,7 @@ export const login=createAsyncThunk('auth/login',async(data)=>{
         })
         return (await res).data;
     }catch(error){
-        return error?.response?.data?.message;
+        toast.error(error?.response?.data?.message);
     }
 })
 

@@ -10,8 +10,6 @@ import background from "../assets/images/background.png";
 import { getAllBookings } from "../redux/slices/bookingSlice";
 import { futsalDetails } from "../redux/slices/futsalSlice";
 function HomePage() {
-  const { isMount } = useSelector((state) => state?.booking);
-
   const [selectedDate, setSelectedDate] = useState(new Date());
   let dayNames = [
     "Sunday",
@@ -54,7 +52,7 @@ function HomePage() {
     getFutsalDetails();
     getEveryBookings();
     getDates();
-  }, [isMount]);
+  }, []);
 
   return (
     <HomeLayout>
@@ -75,13 +73,13 @@ function HomePage() {
           Details
         </p>
       </div>
-      <div className="mt-[25px] flex justify-center items-center gap-[30px]">
-        <div className="bg-[#FFFFFF] w-[620px] ml-[15px] h-[500px] flex-col">
-          <p className="text-center text-black text-4xl font-bold p-[35px]">
+      <div className="mt-[25px] flex justify-center gap-[30px] ">
+        <div className="bg-[#FFFFFF] w-[620px] flex items-center justify-center  h-[500px] flex-col gap-4">
+          <p className="text-center text-black text-4xl font-bold ">
             Basic Details:
           </p>
-          <div className="flex gap-[25px] justify-center font-bold">
-            <div className="text-[black]">
+          <div className="flex gap-[25px] justify-center font-bold text-3xl ">
+            <div className="text-[black] ">
               <p className="underline-offset-1">Location:</p>
               <p className="underline-offset-2">Price Per Hour:</p>
               <p className="underline-offset-4">Opening Time:</p>
@@ -103,10 +101,8 @@ function HomePage() {
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3531.941484331196!2d85.35038037434086!3d27.719092924975328!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1962d1d5d6bf%3A0x43fcef9e567f899f!2sBhat-Bhateni%20Super%20Store%20Boudha%20Chuchepati!5e0!3m2!1sen!2snp!4v1711008771566!5m2!1sen!2snp" width="600" height="500" allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
-        <div className="">
-            <p className="text-center text-white text-5xl font-bold mt-[25px]">Booking</p>
-      </div>
-      <div className="text-center text-4xl text-white py-12 font-semibold">
+        
+      <div className="text-center text-white text-5xl font-bold mt-[25px]">
         Booking
       </div>
       <div className="bg-white min-h-[500px] border-2 border-black px-[200px] mt-4">

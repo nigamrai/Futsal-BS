@@ -84,7 +84,7 @@ function Signup() {
 
   return (
     <div className="h-screen bg-[#0A7116] w-full p-10">
-      <div className="bg-[#F0F2F5] w-[1285px] h-[575px] rounded-2xl border-8 border-[#50A637] flex justify-around items-center gap-20">
+      <div className="bg-[#F0F2F5] w-[1440px] h-[650px] rounded-2xl border-8 border-[#50A637] flex justify-around items-center gap-20">
         <div className="flex flex-col gap-2 ">
           <img src={Logo} className="w-[200px]" />
           <h1 className="text-4xl text-black font-bold w-[350px] ">
@@ -170,7 +170,7 @@ function Signup() {
 
             <p className="ml-[80px] mt-[10px]">
               Already have an account?
-              <Link to="/login" className="text-[#1877F2] font-bold ml-1">Login</Link>
+              <Link to="/" className="text-[#1877F2] font-bold ml-1">Login</Link>
             </p>
           </div>
         </form>

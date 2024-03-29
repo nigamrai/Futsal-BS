@@ -2,7 +2,7 @@ import { model, Schema } from "mongoose";
 
 const bookingSchema=new Schema({
     time:{
-        type:Number,
+        type:String,
         required:[true,"Time is Required"]
     },
     duration:{
@@ -20,6 +20,10 @@ const bookingSchema=new Schema({
     phoneNumber:{
         type:String,
         required:[true,"Phone Number is required"]
+    },
+    status:{
+        type:Boolean,
+        default:true
     },
      userId:{type:Schema.Types.ObjectId,ref:'user'}
     
