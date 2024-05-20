@@ -148,6 +148,18 @@ const removeUser = async (req, res, next) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+const editUser = async (req, res) => {
+  try{
+    const {fullName,role}=req.body;
+    const userId = await User.findByIdAndUpdate(req.params.userId,{fullName,role});
+    res.status(200).json({
+      success:true,
+      message:"User edited successfully"
+    })
+  }catch(error) {
+    console.error(error);
+  }
+}
 const logout=async(req,res)=>{
   const { refreshToken } = req.cookies;
   // delete refresh token from db
@@ -162,5 +174,5 @@ const logout=async(req,res)=>{
     message:"User logout successfully"
   })
 }
-export { getProfile, getUserDetails, login, logout, removeUser, signup };
+export { editUser, getProfile, getUserDetails, login, logout, removeUser, signup };
 
