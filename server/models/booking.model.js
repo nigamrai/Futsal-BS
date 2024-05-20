@@ -25,7 +25,7 @@ const bookingSchema=new Schema({
         type:Boolean,
         default:true
     },
-     userId:{type:Schema.Types.ObjectId,ref:'user'}
+     userId:{type:Schema.Types.ObjectId,ref:'User'}
     
 
 },{timeStamps:true});

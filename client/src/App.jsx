@@ -6,6 +6,8 @@ import Signup from "./pages/Signup";
 import User from "./pages/User";
 import Futsal from "./pages/Futsal";
 import FutsalAdmin from "./pages/FutsalAdmin";
+import TotalUsers from "./pages/TotalUsers";
+import EditPage from "./pages/Edit";
 
 
 function App() {
@@ -19,7 +21,9 @@ function App() {
       <Route path="/user" element={<User />}></Route>
       <Route path="/futsal" element={<Futsal />}></Route>
       <Route path="/futsaladmin" element={<FutsalAdmin />}></Route>
-
+      <Route path="/totalusers" element={<TotalUsers />}></Route>
+      <Route path="/superadmin/user/edit/:id" element={<EditPage/>}></Route>
+      
     </Routes>
   );
 }

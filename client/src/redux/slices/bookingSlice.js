@@ -31,6 +31,7 @@ export const getAllBookings=createAsyncThunk('booking/getBookings',async(data)=>
             },
             error:'Failed to fetch data'
         })
+        console.log((await res).data.bookings);
         return (await res).data.bookings;
     }catch(error){
         toast.error(error?.response?.data?.message);
@@ -48,6 +49,22 @@ const bookingSlice=createSlice({
                state.isMount=true;
             }
         })
+    }
+})
+export const deleteBooking=createAsyncThunk("/booking/delete",async(bookingId)=>{
+    try{
+        const res=axiosInstance.delete(`/booking/removeBooking/${bookingId}`);
+        toast.promise(res,{
+            loading:"Waiting to delete data",
+            success:(data)=>{
+                return data?.data?.message
+            },
+            error:"Failed to delete data"
+        })
+        console.log(await res).data;
+        return (await res).data;
+    }catch(error){
+        toast.error(error?.response.data?.message);
     }
 })
 

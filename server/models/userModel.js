@@ -42,5 +42,5 @@ const userSchema = new Schema(
   timestamps: true,
 });
 
-const User = model("user", userSchema, "users");
+const User = model("User", userSchema, "users");
 export default User;

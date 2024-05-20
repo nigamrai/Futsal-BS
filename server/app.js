@@ -10,6 +10,7 @@ import userRouter from './router/userRouter.js';
 
 connectToDB;
 
+
 const app = express();
 
 app.use(express.json());

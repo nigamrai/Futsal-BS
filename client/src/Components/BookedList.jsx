@@ -2,12 +2,18 @@ import { Fragment, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createNewBooking } from "../redux/slices/bookingSlice.js";
-function Booking({ date, day }) {
+import { createNewBooking, deleteBooking } from "../redux/slices/bookingSlice.js";
+import { getAllBookings } from "../redux/slices/bookingSlice.js";
+import axios from "axios";
+import Popupmodel from "./Popupmodel.jsx";
+import axiosInstance from "../Helpers/axiosInstance.js";
+import { getBookings } from "../../../server/controllers/bookingController.js";
+function BookedList({ date, day }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { bookedData } = useSelector((state) => state?.booking);
   const {data}=useSelector((state)=>state?.auth)
+  
   
   const [bookingData, setBookingData] = useState({
     date: date,
@@ -18,6 +24,7 @@ function Booking({ date, day }) {
     userId:data._id
   });
   const [bookedDate, setBookedDate] = useState([]);
+  
   const timeSlot = [
     "7am",
     "8am",
@@ -34,8 +41,14 @@ function Booking({ date, day }) {
     "7pm",
     "8pm",
   ];
+
+  // async function getEveryBookings() {
+  //   await dispatch(getAllBookings());
+  // }
   
+ 
   useEffect(() => {
+    
     const dateMap = {};
 
     bookedData.forEach((item) => {
@@ -60,6 +73,19 @@ function Booking({ date, day }) {
    
   
   }
+  async function getEveryBookings(){
+    await dispatch(getAllBookings())
+  }
+  const handleDelete = async (id) => {
+    console.log(id);
+      const response=await dispatch(deleteBooking(id));
+      
+     
+          getEveryBookings();
+     
+      // Optionally, you can also update the UI to reflect the deletion
+   
+  };
   async function createBooking(e) {
     e.preventDefault();
     if (!bookingData.phoneNumber) {
@@ -83,7 +109,7 @@ function Booking({ date, day }) {
     }
   }
   
-  function popupp(id, date, day, item) {
+  function popup(id, date, day, item) {
     // console.log(item)
     return (
       <dialog id={id} className="bg-[#F0F2F5] h-[400px]  ">
@@ -95,7 +121,57 @@ function Booking({ date, day }) {
             </button>
           </form>
 
-          <form
+         
+           
+            
+              <div className="text-black">
+                  
+                              {/**/}
+                                {bookedData ? (
+                            
+                                    bookedData
+                                    .filter((booking) => booking.date === date && booking.time === item)
+                                    .map((booking) => {
+                                      console.log(booking);
+                                      return <>
+                                      <p>Booking Details</p>
+                                      <table className="w-[300px] border-collapse border-black">
+                    <thead>
+                    <tr className="border-2 border-black">  
+                            <th className="border-2 border-black">BookedList</th>  
+                            <th className="border-2 border-black">Action</th>  
+                        </tr>  
+                        </thead>
+                           <tbody>
+                           
+                                       <tr key={booking._id}>
+                                            <td className="border-2 border-black">
+                                            {/* Display users table's users data or information */}
+                                            <p>Date: {booking.date} </p>
+                                              <p>Name: {booking.userId.fullName} </p>
+                                              <p>Time: {booking.time}</p>
+                                              <p>Duration: {booking.duration}</p>
+                                              <p>PhoneNumber: {booking.phoneNumber}</p>
+                                              <p>PaymentMethod: {booking.paymentMethod}</p>
+                                              <p>Amount: {booking.amount}</p>
+                                             </td>
+                                            <td  className="border-2 border-black">
+                                            <button className="border-2 border-black"  onClick={() => handleDelete(booking._id)}>Delete</button><br/>
+                                              <button  className="border-2 border-black">Edit</button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                        </table>
+                                      </>
+                                    
+                                    })   
+                                  ) : (
+                                    <></>
+                                )} 
+                                <>
+                                  {/* Rendering "No booking found" text and book button */}
+                                  {(!bookedData || !bookedData.find(booking => booking.date === date && booking.time === item)) && (
+                                    <form
             noValidate
             className="text-black flex flex-col justify-center items-center font-semibold gap-4"
             onSubmit={createBooking}
@@ -177,6 +253,11 @@ function Booking({ date, day }) {
               Book Now
             </button>
           </form>
+                                  )}
+                                </>
+                           
+              </div>
+          
         </div>
       </dialog>
     );
@@ -213,10 +294,10 @@ function Booking({ date, day }) {
 
           return (
             <Fragment>
-              {popupp(`bookingForm${day}${key}`, date, day, item)}
+              {popup(`bookingForm${day}${key}`, date, day, item)}
               <button
                 key={key}
-                className={`h-[40px] w-[127px] border-2 border-black flex items-center justify-center ${bgColor}`}
+                className={` btn text-black hover:text-white h-[40px] w-[127px] border-2 border-black flex items-center justify-center ${bgColor}`}
                 onClick={() =>
                   document.getElementById(`bookingForm${day}${key}`).showModal()
                 }
@@ -232,4 +313,4 @@ function Booking({ date, day }) {
   );
 }
 
-export default Booking;
+export default BookedList;

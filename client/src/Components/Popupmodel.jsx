@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createNewBooking } from "../redux/slices/bookingSlice.js";
-function Booking({ date, day }) {
+function Popupmodel({ date, day }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { bookedData } = useSelector((state) => state?.booking);
@@ -19,20 +19,7 @@ function Booking({ date, day }) {
   });
   const [bookedDate, setBookedDate] = useState([]);
   const timeSlot = [
-    "7am",
-    "8am",
-    "9am",
-    "10am",
-    "11am",
-    "12pm",
-    "1pm",
-    "2pm",
-    "3pm",
-    "4pm",
-    "5pm",
-    "6pm",
-    "7pm",
-    "8pm",
+    " "
   ];
   
   useEffect(() => {
@@ -79,11 +66,11 @@ function Booking({ date, day }) {
         phoneNumber: "",
         userId:data._id
       });
-      navigate("/futsaladmin");
+      navigate("/home");
     }
   }
   
-  function popupp(id, date, day, item) {
+  function model(id, date, day, item) {
     // console.log(item)
     return (
       <dialog id={id} className="bg-[#F0F2F5] h-[400px]  ">
@@ -183,37 +170,27 @@ function Booking({ date, day }) {
   }
 
   return (
-    <div className="flex mt-[1px] gap-[1px]">
-      <div className="w-[227px] bg-black text-white flex flex-col justify-center items-center">
+    <div >
+      <div>
         <p className="font-bold text-2xl">{day}</p>
         <p id="date" className="font-semibold text-xl">
           {date}
         </p>
       </div>
-      <div className="grow  grid grid-cols-7 gap-[1px] text-black font-semibold">
+      <div className="text-black">
         {timeSlot.map((item, key) => {
   
           let bgColor = "bg-white";
           if (bookedDate[date]) {
             // console.log(bookedDate[date]); // Log the array of times for the given date
             // console.log(item); // Log the current item
-            bookedDate[date].forEach((element) => {
-              // console.log( element)
-              // console.log( item)
-              if (element == item) {
-
-                bgColor = "bg-[#ff0000]";
-   
-                return true;
-              }
-            });
-      
+            
             // console.log(value);
           }
 
           return (
             <Fragment>
-              {popupp(`bookingForm${day}${key}`, date, day, item)}
+              {model(`bookingForm${day}${key}`, date, day, item)}
               <button
                 key={key}
                 className={`h-[40px] w-[127px] border-2 border-black flex items-center justify-center ${bgColor}`}
@@ -222,7 +199,7 @@ function Booking({ date, day }) {
                 }
                 value={`${date} ${day} ${item}`}
               >
-                {item}
+                Book
               </button>
             </Fragment>
           );
@@ -232,4 +209,4 @@ function Booking({ date, day }) {
   );
 }
 
-export default Booking;
+export default Popupmodel;

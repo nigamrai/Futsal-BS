@@ -36,7 +36,8 @@ const newBooking=async(req,res,next)=>{
 }
 const getBookings=async(req,res,next)=>{
     try{
-        const bookings=await Booking.find({status:true});
+        const bookings=await Booking.find({status:true}).populate('userId','fullName mobile');
+        
         if(!bookings){
             return next(new AppError('No data',400))
         }
@@ -49,5 +50,21 @@ const getBookings=async(req,res,next)=>{
         return next(error);
     }
 }
-export { getBookings, newBooking };
+const removeBooking = async (req, res, next) => {
+    try {
+      const bookingId = req.params.bookingId;
+     
+      await Booking.findByIdAndUpdate(bookingId,{status:false});
+  
+  
+      res.status(200).json({
+          success:true,
+          message:"Booking deleted successfully"
+      }) // No content - successful deletion
+    } catch (error) {
+      console.error("Error deleting Booking:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  };
+export { getBookings, newBooking, removeBooking };
 

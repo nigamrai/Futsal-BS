@@ -146,4 +146,17 @@ const removeUser = async (req, res, next) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-export { signup, getProfile, login, getUserDetails, removeUser };
+
+const editUser = async (req, res) => {
+  try{
+    const {fullName,role}=req.body;
+    const userId = await User.findByIdAndUpdate(req.params.userId,{fullName,role});
+    res.status(200).json({
+      success:true,
+      message:"User edited successfully"
+    })
+  }catch(error) {
+    console.error(error);
+  }
+}
+export { signup, getProfile, login, getUserDetails, removeUser, editUser };
