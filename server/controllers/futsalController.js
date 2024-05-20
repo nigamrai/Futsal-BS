@@ -11,7 +11,7 @@ const getFutsalDetail=async(req,res,next)=>{
         if(!futsal){
             return next(new AppError('Futsal with given email does not exist',400))
         }
-        console.log(futsal);
+    
         res.status(200).json({
             success:true,
             message:"Futsal detail fetched successfully",

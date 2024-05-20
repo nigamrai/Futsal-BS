@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -18,6 +18,12 @@ function Login() {
       [name]: value,
     });
   }
+  useEffect(() => {
+    let isAuth = localStorage.getItem('isLoggedIn');
+    if(isAuth) {
+       navigate('/home');
+    }
+ }, [])
   async function onLogin(e) {
     e.preventDefault();
     if (!loginData.email || !loginData.password) {

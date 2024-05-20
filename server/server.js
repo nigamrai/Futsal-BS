@@ -1,9 +1,9 @@
-import {} from 'dotenv/config';
+import { v2 as cloudinary } from 'cloudinary';
+import { } from 'dotenv/config';
+import server from './app.js';
 import connectToDB from './config/DBConnect.js';
-import app from './app.js';
-import {v2 as cloudinary} from 'cloudinary';
 const PORT = process.env.PORT || 5001;
-console.log(process.env.ACCESS_TOKEN_SECRET);
+
 
 cloudinary.config({
     cloud_name: 'dacafjeag',
@@ -11,7 +11,7 @@ cloudinary.config({
     api_secret: 'yngLYLzcTwiXqVirsqR0rBKr-GM'
 });
   
-app.listen(PORT, async() => {
+server.listen(PORT, async() => {
     await connectToDB();
     console.log(`App is running at http:localhost:${PORT}`);
 });

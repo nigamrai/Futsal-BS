@@ -22,7 +22,9 @@ const futsalSlice=createSlice({
         builder
         .addCase(futsalDetails.fulfilled,(state,action)=>{
             if(action?.payload){
+               
                 state.futsalData=[action.payload];
+                
             }
         })
     }

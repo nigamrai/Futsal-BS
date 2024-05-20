@@ -25,7 +25,15 @@ const bookingSchema=new Schema({
         type:Boolean,
         default:true
     },
-     userId:{type:Schema.Types.ObjectId,ref:'user'}
+    amount:{
+        type:Number
+    },
+    transaction_code: String,
+    paymentMethod:{
+        type:String
+    },
+    userId:{type:Schema.Types.ObjectId,ref:'user'},
+    paymentId:{type:Schema.Types.ObjectId,ref:'Payment'}
     
 
 },{timeStamps:true});
