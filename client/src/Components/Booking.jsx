@@ -358,7 +358,7 @@ function Booking({ date, day, getBookings,price }) {
 
           return (
             <Fragment>
-              {popup(`bookingForm${day}${key}`, date, day, item)}
+              {popupp(`bookingForm${day}${key}`, date, day, item)}
               <button
                 key={key}
                 className={`h-[40px] w-[127px] border-2 border-black flex items-center justify-center ${bgColor} btn text-black font-bold hover:text-white disabled:bg-[#ff0000] disabled:text-black ${

@@ -48,5 +48,21 @@ const bookingSlice=createSlice({
         })
     }
 })
+export const deleteBooking=createAsyncThunk("/booking/delete",async(bookingId)=>{
+    try{
+        const res=axiosInstance.delete(`/booking/removeBooking/${bookingId}`);
+        toast.promise(res,{
+            loading:"Waiting to delete data",
+            success:(data)=>{
+                return data?.data?.message
+            },
+            error:"Failed to delete data"
+        })
+        console.log(await res).data;
+        return (await res).data;
+    }catch(error){
+        toast.error(error?.response.data?.message);
+    }
+})
 
 export default bookingSlice.reducer;

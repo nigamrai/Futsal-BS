@@ -1,6 +1,6 @@
 import express from 'express';
 //import express from "express";
-import { getProfile, getUserDetails, login, logout, removeUser, signup } from '../controllers/userController.js';
+import { editUser, getProfile, getUserDetails, login, logout, removeUser, signup } from '../controllers/userController.js';
 import { authorizedRoles, isLoggedIn } from '../middlewares/auth.middleware.js';
 
 
@@ -12,7 +12,8 @@ userRoutes.post('/signup',signup);
 userRoutes.get('/me', isLoggedIn,getProfile);
 userRoutes.post('/login',login);
 userRoutes.post('/getUsers',isLoggedIn,authorizedRoles(["SUPERADMIN"]),getUserDetails);
-userRoutes.put('/removeUser/:userId',isLoggedIn,authorizedRoles(["SUPERADMIN"]),removeUser);
+userRoutes.delete('/removeUser/:userId',isLoggedIn,authorizedRoles(["SUPERADMIN"]),removeUser);
+userRoutes.put('/edit/:userId',editUser);
 userRoutes.get('/logout',logout);
 
 export default userRoutes;

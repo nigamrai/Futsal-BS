@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import axiosInstance from "../../Helpers/axiosInstance";
 
 
@@ -22,13 +22,29 @@ export const userDetails=createAsyncThunk('/user/getDetails',async()=>{
 })
 export const deleteUser=createAsyncThunk("/user/delete",async(userId)=>{
     try{
-        const res=axiosInstance.put(`/user/removeUser/${userId}`);
+        const res=axiosInstance.delete(`/user/removeUser/${userId}`);
         toast.promise(res,{
             loading:"Waiting to delete user",
             success:(data)=>{
                 return data?.data?.message
             },
             error:"Failed to delete user"
+        })
+        return (await res).data;
+    }catch(error){
+        toast.error(error?.response.data?.message);
+    }
+})
+
+export const editUser=createAsyncThunk("user/edit",async(userId)=>{
+    try{
+        const res=axiosInstance.get(`/user/editUser/${userId}`);
+        toast.paromise(res,{
+            loading:"Waiting to edit user",
+            success:(data)=>{
+                return data?.data?.message
+            },
+            error:"Failed to edit user"
         })
         return (await res).data;
     }catch(error){

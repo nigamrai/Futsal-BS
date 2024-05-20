@@ -30,7 +30,11 @@ function Login() {
       toast.error("All fields are required");
       return;
     }
-    if (!loginData.email.match(/^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/)) {
+    if (
+      !loginData.email.match(
+        /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/
+      )
+    ) {
       toast.error("Invalid email format");
       return;
     }
@@ -64,7 +68,7 @@ function Login() {
         </div>
         <div>
           <form
-          noValidate
+            noValidate
             className="bg-[#FEFAFA]  w-[400px] h-[300px] rounded-md pt-8 flex flex-col items-center gap-6"
             onSubmit={onLogin}
           >
@@ -99,7 +103,7 @@ function Login() {
             <div className="flex flex-col gap-4 items-center">
               <div className="w-[350px] h-[1px] bg-black"></div>
               <p>
-                Don't have an account?{" "}
+                {/* Don't have an account?{" "} */}
                 <Link to="/signup" className="text-[#1877F2] font-bold">
                   Signup
                 </Link>

@@ -1,13 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-import { userDetails ,deleteUser, editUser} from "../redux/slices/userSlice.js";
+import { userDetails} from "../redux/slices/userSlice.js";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
-function User() {
+function TotalUsers() {
 
     const {userData}=useSelector((state)=>state?.user);
     const dispatch=useDispatch();
-    const navigate=useNavigate();
     async function getUserDetails(){
         await dispatch(userDetails());
     }
@@ -15,17 +13,11 @@ function User() {
         getUserDetails();
     },[])
 
-    const removeUser = async (userId) => {
-     const response=await dispatch(deleteUser(userId));
-     if(response?.payload?.success){
-        getUserDetails();
-     }
-    };
     
     return (
         <div className="bg-[#D9D9D9] w-full h-auto border-8 border-[#2BA942]">
             <div className=" text-center mt-[30px]">
-            <p className="text-[#000000] font-[bold] text-4xl">User-Table</p>
+            <p className="text-[#000000] font-[bold] text-4xl">TotalUsers</p>
             </div>
 
             <div className="border-lime-600 text-[#000000] w-[1500px] ml-[245px]">
@@ -36,24 +28,16 @@ function User() {
                             <th className="border-2 border-black">UserName</th> 
                             <th className="border-2 border-black">PhoneNumber</th> 
                             <th className="border-2 border-black">Email</th> 
-                            <th className="border-2 border-black">ActiveStatus</th> 
-                            <th className="border-2 border-black">Action</th> 
                         </tr>  
                         </thead>  
                         <tbody>   
-                        {userData.map((user)=>{
+                        {userData.map((user, index)=>{
 
-                            return <tr key={user._id}>   
-                            <td className="border-2 border-black" >{user._id}</td>
+                            return <tr key={index}>   
+                            <td className="border-2 border-black" >{index + 1}</td>
                             <td className="border-2 border-black" >{user.fullName}</td> 
                             <td className="border-2 border-black" >{user.mobile}</td> 
-                            <td className="border-2 border-black" >{user.email}</td>
-                            <td className="border-2 border-black" >{user.role}</td>  
-                            <td className="border-2 border-black grid gap-2 grid-cols">
-                            
-                            <button className="border-2 border-black" onClick={() => removeUser(user._id)}>Delete</button>
-                            <button className="border-2 border-black" onClick={() =>navigate(`/superadmin/user/edit/${user._id}`) }>Edit</button>
-                            </td>                   
+                            <td className="border-2 border-black" >{user.email}</td>                    
                             </tr> 
                         })}
                      </tbody>      
@@ -64,4 +48,4 @@ function User() {
     )
 
 }
-export default User;
+export default TotalUsers;

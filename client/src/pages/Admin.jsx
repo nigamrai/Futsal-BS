@@ -27,7 +27,7 @@ function Admin(){
             <div className='bg-[#F3F2F2] h-[200px] w-full flex'>
                 <div className='bg-[#43BF7F] w-[340px] h-[220px] rounded-[10px] ml-[120px] mt-[180px]'>
                     <div className='font-bold text-center mt-[40px]'>
-                    <Link to="" className='text-white text-3xl'>Total User</Link>
+                    <Link to="/totalusers" className='text-white text-3xl'>Total User</Link>
                     <FaUsers size={50} className='text-white ml-[135px] mt-[]'/>                    
                     </div>
                                
@@ -36,10 +36,8 @@ function Admin(){
                 <div className='font-bold text-center mt-[40px]'>
                     <Link to="" className='text-white text-3xl'>Active User</Link>
                     <FaSquareCheck size={50} className='text-white ml-[135px] mt-[]'/>                    
-                    </div>
-                            
+                    </div>       
                   </div>
-                
             </div>
         </div>
     );
