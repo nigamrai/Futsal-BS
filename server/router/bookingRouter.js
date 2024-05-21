@@ -3,6 +3,6 @@ import { deleteBooking, getBookings, newBooking } from '../controllers/bookingCo
 import { isLoggedIn } from '../middlewares/auth.middleware.js';
 const router=express.Router();
 router.post('/create',isLoggedIn,newBooking);
-router.get('/getBookings',isLoggedIn,getBookings);
-router.delete('/removeBooking/:bookingId',deleteBooking);
+router.get('/getBookings',getBookings);
+router.delete('/removeBooking/:bookingId',isLoggedIn,deleteBooking);
 export default router;
