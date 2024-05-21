@@ -2,12 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createNewBooking, deleteBooking } from "../redux/slices/bookingSlice.js";
-import { getAllBookings } from "../redux/slices/bookingSlice.js";
-import axios from "axios";
-import Popupmodel from "./Popupmodel.jsx";
-import axiosInstance from "../Helpers/axiosInstance.js";
-import { getBookings } from "../../../server/controllers/bookingController.js";
+import { createNewBooking, deleteBooking, getAllBookings } from "../redux/slices/bookingSlice.js";
 function BookedList({ date, day }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,7 +19,7 @@ function BookedList({ date, day }) {
     userId:data._id
   });
   const [bookedDate, setBookedDate] = useState([]);
-  
+  console.log(bookedData);
   const timeSlot = [
     "7am",
     "8am",

@@ -5,11 +5,13 @@ async function refresh(req, res) {
   // get refresh token from cookie
   const { refreshToken: refreshTokenFromCookie } = req.cookies;
   // check if token is valid
+
   let userData;
   try {
     userData = await JwtService.verifyRefreshToken(refreshTokenFromCookie);
   } catch (err) {
-    return res.status(401).json({ message: "Invalid Token" });
+    console.log("Hello");
+    return res.status(401).json({ message: "Invalid Token 1" ,success:false});
   }
   // Check if token is in db
   try {
@@ -18,7 +20,7 @@ async function refresh(req, res) {
       refreshTokenFromCookie
     );
     if (!token) {
-      return res.status(401).json({ message: "Invalid token" });
+      return res.status(401).json({ message: "Invalid token 2" });
     }
   } catch (err) {
     
