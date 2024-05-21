@@ -32,7 +32,7 @@ const bookingSchema=new Schema({
     paymentMethod:{
         type:String
     },
-    userId:{type:Schema.Types.ObjectId,ref:'user'},
+    userId:{type:Schema.Types.ObjectId,ref:'User'},
     paymentId:{type:Schema.Types.ObjectId,ref:'Payment'}
     
 

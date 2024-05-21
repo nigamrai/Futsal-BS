@@ -1,3 +1,4 @@
+import * as crypto from "crypto";
 import Joi from "joi";
 import mongoose from "mongoose";
 import Booking from "../models/booking.model.js";
@@ -97,7 +98,7 @@ const newBooking = async (req, res, next) => {
 
 const getBookings=async(req,res,next)=>{
     try{
-        const bookings=await Booking.find({status:true, transaction_code: { $exists: true }});
+        const bookings=await Booking.find({status:true, transaction_code: { $exists: true }}).populate("userId");
         if(!bookings){
             return next(new AppError('No data',401))
         }
@@ -118,19 +119,19 @@ const updateBookingAfterPayment=async(req,res,next)=>{
         booking.transaction_code = req.transaction_code;
     
         booking.save();
-        res.redirect("http://localhost:5173/home#timetable");
+        res.status(200).json({message:"Payment updated successfully"})
       } catch (err) {
         return res.status(400).json({ error: err?.message || "No Orders found" });
       }
 }
 const deleteBooking=async(req,res,next)=>{
     try{
-        const id=req.booking._id;
+        const id=req.params.bookingId;
         await Booking.findByIdAndUpdate(id,{
             status:false
         });
         
-        res.redirect("http://localhost:5173/home#timetable");
+        return res.status(200).json({success:true,message:"Booking deleted successfully"});
     }catch(error){
         return res.status(400).json({error:error?.message || "Delete failed"})
     }
