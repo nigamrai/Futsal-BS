@@ -5,10 +5,6 @@ const bookingSchema=new Schema({
         type:String,
         required:[true,"Time is Required"]
     },
-    duration:{
-        type:Number,
-        required:[true,"Duration is required"]
-    },
     date:{
         type:String,
         required:[true,"Date is required"]

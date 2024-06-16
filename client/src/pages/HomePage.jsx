@@ -1,18 +1,14 @@
 import { useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { FaAnglesLeft, FaAnglesRight } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import Booking from "../Components/Booking";
 import HomeLayout from "../Layouts/HomeLayout";
 import background from "../assets/images/background.png";
 import { futsalDetails } from "../redux/slices/futsalSlice";
+
 function HomePage() {
-  
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const { bookedData } = useSelector((state) => state?.booking);
-  let dayNames = [
+  const { futsalData } = useSelector((state) => state?.futsal);
+  const dayNames = [
     "Sunday",
     "Monday",
     "Tuesday",
@@ -21,33 +17,24 @@ function HomePage() {
     "Friday",
     "Saturday",
   ];
-  const { futsalData } = useSelector((state) => state?.futsal);
   const [dates, setDates] = useState([]);
   const dispatch = useDispatch();
+
   async function getFutsalDetails() {
     await dispatch(futsalDetails());
   }
- const [price,setPrice]=useState({
-  morning:"",
-  day:"",
-  evening:""
- })
 
-  // async function getEveryBookings() {
-  //   await dispatch(getAllBookings());
-  // }
-  // function updateMount(){
-  //   console.log("hello");
-  //   setIsMount(!isMount);
-
-  // }
+  const [price, setPrice] = useState({
+    morning: "",
+    day: "",
+    evening: "",
+  });
 
   const getDates = () => {
     let currentDate = new Date();
     let datesArray = [];
 
     for (let i = 1; i <= 7; i++) {
-      // console.log(currentDate);
       let formattedDate = currentDate.toISOString().slice(0, 10);
       datesArray.push(formattedDate);
       currentDate.setDate(currentDate.getDate() + 1);
@@ -57,17 +44,15 @@ function HomePage() {
 
   useEffect(() => {
     getFutsalDetails();
-   
-    // getEveryBookings();
     getDates();
   }, []);
+
   useEffect(() => {
     if (futsalData.length > 0) {
       const { morning, day, evening } = futsalData[0].futsalPrice;
       setPrice({ morning, day, evening });
     }
   }, [futsalData]);
-
 
   return (
     <HomeLayout>
@@ -76,77 +61,88 @@ function HomePage() {
           backgroundImage: `url(${background})`,
           backgroundSize: "cover",
         }}
-        className="h-[400px] px-[100px] flex flex-col justify-center gap-2"
+        className="h-[400px] px-6 md:px-12 flex flex-col justify-center items-center gap-2 rounded-lg"
       >
-        <h1 className="text-6xl text-[#FFDC58] font-bold w-[700px]">
+        <h1 className="text-4xl md:text-6xl font-bold max-w-[700px] text-center text-white">
           Book {futsalData.map((futsal) => futsal.futsalName)}{" "}
         </h1>
-        <p className="text-white font-bold text-3xl">Booking made easier</p>
-      </div>
-      <div>
-        <p className="text-center text-white text-5xl font-bold mt-[25px]">
-          Details
+        <p className="text-white font-bold text-2xl text-center">
+          Booking made easier
         </p>
       </div>
-      <div className="mt-[25px] flex justify-center gap-[30px] ">
-        <div className="bg-[#FFFFFF] w-[620px] flex items-center justify-center  h-[500px] flex-col gap-4">
-          <p className="text-center text-black text-4xl font-bold ">
+
+      <div className="mt-8 md:mt-12">
+        <p className="text-center text-white text-3xl font-bold">Details</p>
+      </div>
+
+      <div className="bg-white rounded-lg shadow-md border-2 border-gray-200 mt-8 flex flex-col md:flex-row justify-center items-center gap-8 px-4 md:px-12 py-8">
+        {/* Basic Details Card */}
+        <div className="bg-white w-full md:w-[50%] xl:w-[40%] rounded-lg shadow-md p-6">
+          <p className="text-center text-black text-3xl font-bold mb-4">
             Basic Details:
           </p>
-          <div className="flex gap-[25px] justify-center font-bold text-3xl ">
-            <div className="text-[black] ">
-              <p className="underline-offset-1">Location:</p>
-              <div>
-                <p className="underline-offset-2">Price Per Hour:</p>
-                <div className="flex flex-col justify-end items-end">
-                  <p className="text-xl">Morning:</p>
-                  <p className="text-xl">Day:</p>
-                  <p className="text-xl">Evening:</p>
-                </div>
-              </div>
-              <p className="underline-offset-4">Opening Time:</p>
-              <p className="underline-offset-8">Closing Time:</p>
-              <p className="underline-offset-8">Status:</p>
-            </div>
-            <div className="text-[black]">
-              <p className="underline-offset-1">
+          <div className="flex flex-col gap-4">
+            {/* Location */}
+            <div className="flex flex-col">
+              <p className="text-lg font-bold">Location:</p>
+              <p className="pl-4">
                 {futsalData.map((futsal) => futsal.futsalAddress)}
               </p>
+            </div>
 
-              <div>
-                <p className="underline-offset-4"></p>
-                <div className="mt-[35px]">
-                  <p className="underline-offset-2 text-2xl">
-                    {futsalData.map((futsal) => futsal.futsalPrice.morning)}
-                  </p>
-                  <p className="underline-offset-2 text-2xl">
-                    {futsalData.map((futsal) => futsal.futsalPrice.day)}
-                  </p>{" "}
-                  <p className="underline-offset-2 text-2xl">
-                    {futsalData.map((futsal) => futsal.futsalPrice.evening)}
-                  </p>
-                </div>
+            {/* Price Per Hour */}
+            <div className="flex flex-col">
+              <p className="text-lg font-bold mt-4">Price Per Hour:</p>
+              <div className="pl-4 flex flex-col gap-2">
+                <p>
+                  Morning:{" "}
+                  {futsalData.map((futsal) => futsal.futsalPrice.morning)}
+                </p>
+                <p>Day: {futsalData.map((futsal) => futsal.futsalPrice.day)}</p>
+                <p>
+                  Evening:{" "}
+                  {futsalData.map((futsal) => futsal.futsalPrice.evening)}
+                </p>
               </div>
-              <p className="underline-offset-4">
-                {futsalData.map((futsal) => futsal.futsalOpeningTime)}
+            </div>
+
+            {/* Opening and Closing Time */}
+            <div className="flex flex-col">
+              <p className="text-lg font-bold mt-4">
+                Opening and Closing Time:
               </p>
-              <p className="underline-offset-8">
-                {futsalData.map((futsal) => futsal.futsalClosingTime)}
-              </p>
-              <p className="underline-offset-8">
+              <div className="pl-4 flex flex-col gap-2">
+                <p>
+                  Opening Time:{" "}
+                  {futsalData.map((futsal) => futsal.futsalOpeningTime)}
+                </p>
+                <p>
+                  Closing Time:{" "}
+                  {futsalData.map((futsal) => futsal.futsalClosingTime)}
+                </p>
+              </div>
+            </div>
+
+            {/* Status */}
+            <div className="flex flex-col">
+              <p className="text-lg font-bold mt-4">Status:</p>
+              <p className="pl-4">
                 {futsalData.map((futsal) => futsal.futsalOpenStatus)}
               </p>
             </div>
           </div>
         </div>
-        <div className="overflow-hidden relative absolute">
+
+        {/* Google Maps Card */}
+        <div className="overflow-hidden w-full md:w-[50%] xl:w-[60%] h-[300px] md:h-[500px] rounded-lg shadow-md">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3531.941484331196!2d85.35038037434086!3d27.719092924975328!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1962d1d5d6bf%3A0x43fcef9e567f899f!2sBhat-Bhateni%20Super%20Store%20Boudha%20Chuchepati!5e0!3m2!1sen!2snp!4v1711008771566!5m2!1sen!2snp"
-            width="600"
-            height="500"
+            width="100%"
+            height="100%"
             allowFullScreen=""
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
+            className="w-full h-full"
           ></iframe>
         </div>
       </div>
@@ -154,56 +150,41 @@ function HomePage() {
       <div className="text-center text-white text-5xl font-bold mt-[25px]">
         Booking
       </div>
-      <div className="bg-white min-h-[500px] border-2 border-black px-[200px] mt-4" id="timetable">
+      <div
+        className="bg-white rounded-lg shadow-md border-2 border-gray-200 px-[20px] md:px-[200px] mt-4 mb-4"
+        id="timetable"
+      >
         <p className="text-black font-semibold text-5xl text-center mt-2">
           Timetable
         </p>
-        <div className="flex justify-between mt-12">
-          <div className="">
-            <Link
-              to="/"
-              className="flex gap-4 items-center text-blue-500 font-semibold text-xl"
-            >
-              <FaAnglesLeft className="text-blue-500" /> Previous
-            </Link>
-          </div>
-          <div className=" text-xl flex gap-4 text-black">
-            <p className="font-bold">Date:</p>
-            <DatePicker
-              selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
-              className="outline-none font-semibold bg-white cursor-pointer"
-            />
-          </div>
-          <Link
-            to="/"
-            className=" flex gap-4 items-center justify-center text-blue-500 font-semibold text-xl"
-          >
-            Next <FaAnglesRight className="text-blue-500" />
-          </Link>
+        <div className="font-bold">
+          <p>*Please click the box of respective times to book</p>
+          <p>*50% payment is compulsory for booking</p>
         </div>
         <div className="pb-12">
-          <div className="flex  bg-black text-white h-20 items-center mt-4">
-            <div className="px-20 border-r-2 border-white  h-full">
-              <p className="text-4xl font-bold mt-4">Day</p>
+          <div className="flex flex-col md:flex-row bg-black text-white h-20 items-center mt-4 rounded-t-lg">
+            {/* Left Section */}
+            <div className="px-4 md:px-8 lg:px-20 border-r-2 border-white h-full flex justify-center items-center">
+              <p className="text-4xl font-bold mt-4 md:mt-0">Day</p>
             </div>
-            <div className="grid grid-cols-2 grow">
-              <p className="text-4xl font-bold justify-self-center">
+
+            {/* Right Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 flex-grow px-4">
+              {/* Top Right Section */}
+              <p className="text-4xl font-bold justify-self-center md:justify-self-start mt-4 md:mt-0 px-4 md:px-0">
                 Time/Bookings
               </p>
-              <div className="justify-self-end mr-4">
-                <div className="flex gap-2 items-center">
-                  <div className="w-[20px] h-[20px] bg-white border-2 border-black"></div>
-                  <p className="font-semibold">Available</p>
-                </div>
-                <div className="flex gap-2 items-center">
-                  {" "}
-                  <div className="w-[20px] h-[20px] bg-[#FF3E3C] border-2 border-black"></div>
-                  <p className="font-semibold">Booked</p>
-                </div>
+
+              {/* Bottom Right Section */}
+              <div className="flex flex-col md:flex-row gap-2 md:gap-4 items-center justify-center md:justify-end px-4 md:px-0">
+                <div className="w-4 h-4 md:w-[20px] md:h-[20px] bg-black border-2 border-black"></div>
+                <p className="font-semibold">Available</p>
+                <div className="w-4 h-4 md:w-[20px] md:h-[20px] bg-[#FF3E3C] border-2 border-black ml-2"></div>
+                <p className="font-semibold">Booked</p>
               </div>
             </div>
           </div>
+
           <div>
             {dates.map((date, index) => (
               <Booking
@@ -220,4 +201,5 @@ function HomePage() {
     </HomeLayout>
   );
 }
+
 export default HomePage;

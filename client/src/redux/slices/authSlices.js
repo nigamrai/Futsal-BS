@@ -39,6 +39,36 @@ export const createAccount = createAsyncThunk("/auth/signup", async (data) => {
     toast.error(error?.response?.data?.message);
   }
 });
+export const setPasswordThunk=createAsyncThunk('auth/signup/password',async(data)=>{
+  try{
+    const res=axiosInstance.post("/user/set-password",data);
+    toast.promise(res,{
+      loading:"Waiting to set password",
+      success:(data)=>{
+        return data?.data?.message
+      },
+      error:"Faild to set password"
+    })
+    return (await res).data;
+  }catch(err){
+    toast.error(err?.response?.data?.message);
+  }
+})
+export const confirmation=createAsyncThunk("auth/user/confirmation",async(token)=>{
+  try{
+    const res=axiosInstance.get(`/user/confirm/${token}`);
+    toast.promise(res,{
+      loading:'Confirming....',
+      success:(data)=>{
+        return data?.data?.message
+      },
+      error:"Failed to confirm"
+    })
+    return (await res).data;
+  }catch(error){
+    toast.error(error?.response?.data?.message);
+  }
+})
 
 export const logout = createAsyncThunk("auth/logout", async () => {
   try {

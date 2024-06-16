@@ -1,72 +1,117 @@
 import bcrypt from "bcrypt";
+import * as crypto from 'crypto';
+import Joi from "joi";
 import User from "../models/userModel.js";
 import JwtService from "../utils/JwtUtil.js";
 import AppError from "../utils/errorUtil.js";
-
-import Joi from "joi";
+import sendEmail from "../utils/sendEmail.js";
 const cookieOptions={
   maxAge:7*24*60*60*1000,
   httpOnly:true,
   secure:true
 }
 const signup = async (req, res, next) => {
-  const { fullName, mobile, email, password, confirmPassword, role } = req.body;
+  const { fullName, mobile, email,status } = req.body;
 
   const registerSchema = Joi.object({
     fullName: Joi.string().min(5).max(50).trim().required(),
     mobile: Joi.string().required(),
     email: Joi.string().email().required(),
-    password: Joi.string()
-      .pattern(
-        new RegExp(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-        )
-      )
-      .required(),
-    confirmPassword: Joi.ref("password"),
-    role: Joi.string().required(),
+    status:Joi.boolean()
   });
   const { error } = registerSchema.validate(req.body);
   if (error) {
     return next(error);
   }
+  
+  const emailExists = await User.findOne({ email, status: true });
 
-  const emailExists = await User.findOne({ email });
  
   if (emailExists) {
     return next(new AppError("Email already exists", 400));
   }
-  const numberExists = await User.findOne({ mobile });
+  const numberExists = await User.findOne({ mobile,status:true});
   if (numberExists) {
     return next(new AppError("Number already exists"), 400);
   }
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const user = await User.create({
+ 
+ 
+  let user = await User.create({
     fullName,
     mobile,
     email,
-    password: hashedPassword,
-    role,
+    status
   });
-  
-
-
-  if (!user) {
+  if (user) {
+    const passwordToken=await user.generateSetPasswordToken();
+    await user.save();
+    const setPasswordURL=`$http://localhost:5173/set-password/${passwordToken}`;
+    const subject="Set Password";
+    const message=`You can set your password by clicking <a href=${setPasswordURL} target="_blank">Set Password</a>\nIf the above link does not work for some reason then copy paste this link in new tab ${setPasswordURL} If you have not requested this, kindly ignore.`
+    try{
+      await sendEmail(email,subject,message);
+      res.status(201).json({
+        success: true,
+        message: "Set password url sent successfully",
+        user
+      });
+    }catch(error){
+      const id=user._id;
+      console.log(id);
+      await User.findByIdAndDelete(id)
+      console.log(error.message);
+    }
+  }else{
+   
     return next(AppError("User signup failed please try again", 400));
+  }  
+};
+const setPassword=async(req,res)=>{
+  const {password,token}=req.body;
+
+  try{
+    const setPasswordToken = crypto
+    .createHash('sha256')
+    .update(token)
+    .digest('hex');
+    const user=await User.findOne({ setPasswordToken,setPasswordExpiry:{$gt:Date.now()}});
+    if(!user){
+      await User.findOneAndDelete({setPasswordToken})
+      return next(new AppError('Token is invalid or expired,please try again',400))
+    }
+    const hashPassword=await bcrypt.hash(password,10);  
+    user.password=hashPassword;
+    user.status=true;
+    user.setPasswordToken=undefined;
+    user.setPasswordExpiry=undefined;
+    await user.save();
+    user.password=undefined;
+    res.status(200).json({
+      success:true,
+      message:"Password set successfully",
+      user
+    })
+  }catch(error){
+    
   }
 
-  await user.save();
+}
+const confirm=async(req,res,next)=>{
+  const {token:setPasswordToken}=req.params;
+  try{
+    const user=await User.findOne({setPasswordToken,status:true});
 
-  user.password = undefined;
-
-  res.status(201).json({
-    success: true,
-    message: "user signup successfully",
-    user,
-  });
-};
-
+    if(!user){
+      return next(new AppError("You have not set password. Please set password first",400))
+    }
+    res.status(200).json({
+      success:true,
+      message:"Successfully confirmed"
+    })
+  }catch(error){
+    console.log(error);
+  }
+}
 const getProfile = (req, res) => {};
 const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -85,6 +130,7 @@ const login = async (req, res, next) => {
   if (error) {
     return next(error);
   }
+ 
   try {
     //check if the user with given email exists or not
     const user = await User.findOne({ email }).select("+password");
@@ -174,5 +220,5 @@ const logout=async(req,res)=>{
     message:"User logout successfully"
   })
 }
-export { editUser, getProfile, getUserDetails, login, logout, removeUser, signup };
+export { confirm, editUser, getProfile, getUserDetails, login, logout, removeUser, setPassword, signup };
 

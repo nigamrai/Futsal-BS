@@ -1,8 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 
 import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import axiosInstance from '../Helpers/axiosInstance';
-import { useNavigate, useParams} from 'react-router-dom';
 const EditPage = () => {
 const navigate=useNavigate()
   const {id}=useParams();
@@ -62,7 +62,7 @@ const navigate=useNavigate()
       </div>
      
       <button onClick={() => handleEdit(id)}>
-        Delete User
+        Edit User
       </button>
     </div>
   );

@@ -1,5 +1,5 @@
+import * as crypto from 'crypto';
 import { Schema, model } from "mongoose";
-
 const userSchema = new Schema(
   {
     fullName: {
@@ -25,7 +25,6 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
       minLength: [8, "Password must be at least 8 characters"],
       select: false,
     },
@@ -34,6 +33,8 @@ const userSchema = new Schema(
       enum: ["USER", "ADMIN", "FUTSAL"],
       default: "USER",
     },
+    setPasswordToken:String,
+    setPasswordExpiry:Date,
      status:{
     type:Boolean,
     default:true
@@ -41,6 +42,14 @@ const userSchema = new Schema(
 },{
   timestamps: true,
 });
+userSchema.methods={
+  generateSetPasswordToken:async function(){
+    const PasswordToken=crypto.randomBytes(20).toString('hex');
+    this.setPasswordToken=crypto.createHash('sha256').update(PasswordToken).digest('hex');
+    this.setPasswordExpiry=Date.now()+5*60*1000;
+    return PasswordToken;
+ }
+}
 
 const User = model("User", userSchema, "users");
 export default User;

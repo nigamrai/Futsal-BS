@@ -14,20 +14,19 @@ const createSignature = (message) => {
     return hashInBase64;
   };
 const newBooking = async (req, res, next) => {
-    const { date, day, time, duration, phoneNumber, userId ,paymentMethod,paymentAmount} = req.body;
+    const { date, day, time, phoneNumber, userId ,paymentMethod,paymentAmount} = req.body;
 
     const bookingSchema = Joi.object({
         date: Joi.string().required(),
         day: Joi.string().required(),
         time: Joi.string().required(),
-        duration: Joi.number().required(),
-        phoneNumber: Joi.string().min(10).max(14).required(),
+        phoneNumber: Joi.number().required(),
         userId: Joi.string(),
         paymentMethod:Joi.string(),
         paymentAmount:Joi.number()
     });
 
-    const { error } = bookingSchema.validate({date,day,time,duration,phoneNumber,userId,paymentMethod,paymentAmount});
+    const { error } = bookingSchema.validate({date,day,time,phoneNumber,userId,paymentMethod,paymentAmount});
     if (error) {
         return next(error);
     }
@@ -50,7 +49,7 @@ const newBooking = async (req, res, next) => {
     
         // Create a new booking
         const booked = await Booking.create(
-            [{ date, day, time, duration, phoneNumber, userId ,paymentMethod,amount:paymentAmount}],
+            [{ date, day, time, phoneNumber, userId ,paymentMethod,amount:paymentAmount}],
             { session: session }
         );
         // console.log(booked);
@@ -119,9 +118,9 @@ const updateBookingAfterPayment=async(req,res,next)=>{
         booking.transaction_code = req.transaction_code;
     
         booking.save();
-        res.status(200).json({message:"Payment updated successfully"})
+         res.redirect("http://localhost:5173/home");
       } catch (err) {
-        return res.status(400).json({ error: err?.message || "No Orders found" });
+         res.status(400).json({ error: err?.message || "No Orders found" });
       }
 }
 const deleteBooking=async(req,res,next)=>{
@@ -131,7 +130,7 @@ const deleteBooking=async(req,res,next)=>{
             status:false
         });
         
-        return res.status(200).json({success:true,message:"Booking deleted successfully"});
+        res.redirect("http://localhost:5173/home");
     }catch(error){
         return res.status(400).json({error:error?.message || "Delete failed"})
     }

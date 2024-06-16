@@ -7,7 +7,6 @@ const handleEsewaSuccess = async (req, res, next) => {
       Buffer.from(data, "base64").toString("utf-8")
     );
     console.log(decodedData);
-
     if (decodedData.status !== "COMPLETE") {
       return res.status(400).json({ messgae: "errror" });
     }
@@ -15,18 +14,16 @@ const handleEsewaSuccess = async (req, res, next) => {
       .split(",")
       .map((field) => `${field}=${decodedData[field] || ""}`)
       .join(",");
-    console.log(message);
     const signature = createSignature(message);
 
     if (signature !== decodedData.signature) {
-      res.json({ message: "integrity error" });
+      return res.json({ message: "integrity error" });
     }
     
     req.transaction_uuid = decodedData.transaction_uuid;
     req.transaction_code = decodedData.transaction_code;
     next();
   } catch (err) {
-    console.log(err);
     return res.status(400).json({ error: err?.message || "No Bookings found" });
   }
 };
@@ -38,13 +35,13 @@ const handleEsewaFailed = (req, res, next) => {
       throw new Error("ID parameter is missing in the request.");
     }
 
-    console.log(id);
+    
     req.booking = { _id: id }
     
     next();
   } catch (err) {
     console.log(err);
-    return res.status(400).json({ error: err.message || "No Bookings found" });
+    res.status(400).json({ error: err.message || "No Bookings found" });
   }
 }
 export { handleEsewaFailed, handleEsewaSuccess };

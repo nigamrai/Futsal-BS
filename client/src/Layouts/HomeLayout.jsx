@@ -4,31 +4,40 @@ import Footer from '../Components/Footer';
 import logo from '../assets/images/Logo.png';
 import { logout } from '../redux/slices/authSlices';
 
-function HomeLayout({children}) {
-  const dispatch=useDispatch();
-  const navigate=useNavigate();
-  async function handleLogout(){
-    const response=await dispatch(logout());
-    if(response?.payload?.success){
+function HomeLayout({ children }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    const response = await dispatch(logout());
+    if (response?.payload?.success) {
       navigate("/");
     }
   }
+
   return (
-    <div className="min-h-[90vh]  bg-[#0A7116] ">
-        <header className='flex justify-between items-center py-4 px-[100px]'>
-            <img src={logo} className='w-[150px] h-[60px]' alt="logo"/>
-            <ul className='flex  gap-8 text-[#FFDC58] font-bold text-[25px] '>
-                <li><Link to="/home">Home</Link></li>
-                <li><Link to="/about">About Us</Link></li>
-                <li><Link>My Bookings</Link></li>
-                <li><Link>Contact Us</Link></li>
-                
-            </ul>
-            <button className='text-[25px] bg-[#2BA942] text-white font-bold px-4 py-2 rounded-sm' onClick={handleLogout}>Logout</button>
-        </header>
+    <div className="min-h-screen bg-white text-gray-800">
+      <header className="container mx-auto py-4 px-4 md:px-10 lg:px-20 flex items-center justify-between">
+        <img src={logo} className="w-24 md:w-32 rounded-lg" alt="logo" />
+        <nav className="space-x-4 md:space-x-8">
+          <Link to="/home" className="text-lg md:text-xl font-semibold hover:text-yellow-600">Home</Link>
+          <Link to="/about" className="text-lg md:text-xl font-semibold hover:text-yellow-600">About Us</Link>
+          <Link to="/bookings" className="text-lg md:text-xl font-semibold hover:text-yellow-600">My Bookings</Link>
+          <Link to="/contact" className="text-lg md:text-xl font-semibold hover:text-yellow-600">Contact Us</Link>
+        </nav>
+        <button
+          onClick={handleLogout}
+          className="text-lg md:text-xl font-semibold bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md transition duration-300"
+        >
+          Logout
+        </button>
+      </header>
+      <main className="container mx-auto mt-8 md:mt-12 px-4 md:px-10 lg:px-20">
         {children}
-        <Footer/>
+      </main>
+      <Footer />
     </div>
   );
 }
+
 export default HomeLayout;
