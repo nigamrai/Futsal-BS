@@ -65,4 +65,20 @@ export const deleteBooking=createAsyncThunk("/booking/delete",async(bookingId)=>
     }
 })
 
+export const editBooking=createAsyncThunk("booking/edit",async(bookingId)=>{
+    try{
+        const res=axiosInstance.get(`/booking/editBooking/${bookingId}`);
+        toast.paromise(res,{
+            loading:"Waiting to edit BookingTime",
+            success:(data)=>{
+                return data?.data?.message
+            },
+            error:"Failed to edit BookingTime"
+        })
+        return (await res).data;
+    }catch(error){
+        toast.error(error?.response.data?.message);
+    }
+})
+
 export default bookingSlice.reducer;

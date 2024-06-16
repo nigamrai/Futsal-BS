@@ -137,5 +137,17 @@ const deleteBooking=async(req,res,next)=>{
     }
 }
 
-export { createSignature, deleteBooking, getBookings, newBooking, updateBookingAfterPayment };
+const editBooking = async (req, res) => {
+    try{
+      const {time}=req.body;
+      const bookingId = await Booking.findByIdAndUpdate(req.params.bookingId,{time});
+      res.status(200).json({
+        success:true,
+        message:"Booking edited successfully"
+      })
+    }catch(error) {
+      console.error(error);
+    }
+  }
 
+export { createSignature, deleteBooking, getBookings, newBooking, updateBookingAfterPayment, editBooking };

@@ -41,7 +41,7 @@ function FutsalAdmin(){
         getDates();
         getEveryBookings();
       }, []);
-   return <FutsalLayout>
+   return ( 
            <div className="bg-white w-full">
                 <p className="text-black font-bold text-5xl text-center p-10">Timetable</p>            
                 <div className="text-black font-bold px-[100px]">
@@ -57,20 +57,6 @@ function FutsalAdmin(){
                         <p className="text-4xl font-bold">
                             Time/Bookings
                         </p>
-                        <div className="justify-self-end mr-4">
-                            <div className="flex gap-2 items-center">
-                            <div className="w-[20px] h-[20px] bg-white border-2 border-black"></div>
-                            <p className="font-semibold">Available</p>
-                            </div>
-                            <div className="flex gap-2 items-center">
-                            <div className="w-[20px] h-[20px] bg-[#FC0101] border-2 border-black"></div>
-                            <p className="font-semibold">Full Payment</p>
-                            </div>
-                            <div className="flex gap-2 items-center">
-                            <div className="w-[20px] h-[20px] bg-[#FFAC33] border-2 border-black"></div>
-                            <p className="font-semibold">Half Payment</p>
-                            </div>
-                        </div>
                         </div>
                     </div>
                     <div>
@@ -90,7 +76,8 @@ function FutsalAdmin(){
                 </p>
             </div>
         </div>
-   </FutsalLayout>
+   )  
+   
 
 } 
 export default FutsalAdmin;

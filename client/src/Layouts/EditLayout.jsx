@@ -4,7 +4,7 @@ import Footer from '../Components/Footer';
 import logo from '../assets/images/Logo.png';
 import { logout } from '../redux/slices/authSlices';
 
-function HomeLayout({children}) {
+function EditBooking({children}) {
   const dispatch=useDispatch();
   const navigate=useNavigate();
   async function handleLogout(){
@@ -31,4 +31,4 @@ function HomeLayout({children}) {
     </div>
   );
 }
-export default HomeLayout;
+export default EditBooking;

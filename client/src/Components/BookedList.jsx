@@ -145,14 +145,13 @@ function BookedList({ date, day }) {
                                             <p>Date: {booking.date} </p>
                                               <p>Name: {booking.userId.fullName} </p>
                                               <p>Time: {booking.time}</p>
-                                              <p>Duration: {booking.duration}</p>
                                               <p>PhoneNumber: {booking.phoneNumber}</p>
                                               <p>PaymentMethod: {booking.paymentMethod}</p>
                                               <p>Amount: {booking.amount}</p>
                                              </td>
                                             <td  className="border-2 border-black">
                                             <button className="border-2 border-black"  onClick={() => handleDelete(booking._id)}>Delete</button><br/>
-                                              <button  className="border-2 border-black">Edit</button>
+                                              <button  className="border-2 border-black" onClick={() =>navigate(`/admin/futsaladmin/edit/${booking._id}`) }>Edit</button>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -206,21 +205,6 @@ function BookedList({ date, day }) {
                       </option>
                     );
                   })}
-                </select>
-              </div>
-              <div>
-                <label htmlFor="duration" className="text-2xl">
-                  Duration:
-                </label>
-                <select
-                  id="duration"
-                  name="duration"
-                  onChange={handleUserInput}
-                  value={bookingData.duration}
-                  className="w-[80px] bg-white ml-2 border-2 border-black"
-                >
-                  <option value="1">1</option>
-                  <option value="2">2</option>
                 </select>
               </div>
             </div>
