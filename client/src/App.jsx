@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound";
 import SetPassword from "./pages/SetPassword";
 import Signup from "./pages/Signup";
 import User from "./pages/User";
+import EditBooking from "./Components/EditBooking";
 function App() {
 
   const { loading } = useLoadingWithRefresh();
@@ -41,10 +42,12 @@ function App() {
         <Route path="/user" element={<User />}></Route>
       </Route>
       <Route element={<RequireAuth allowedRoles={["ADMIN", "SUPERADMIN"]} />}>
+      <Route path="/admin/futsaladmin/edit/:id" element={<EditBooking />}></Route>
         <Route path="/futsal" element={<Futsal />}></Route>
         <Route path="/futsaladmin" element={<FutsalAdmin />}></Route>
         <Route path="/admin" element={<Admin />}></Route>
       </Route>
+      <Route path="/editbooking" element={<EditBooking />}></Route>
       <Route path="*" element={<NotFound />}></Route>
       <Route path="/denied" element={<Denied />}></Route>
     </Routes>
