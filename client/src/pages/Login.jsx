@@ -46,11 +46,20 @@ function Login() {
     }
     const response = await dispatch(login(loginData));
     if (response?.payload?.success) {
+      const user = response.payload.user;
       setLoginData({
         email: "",
         password: "",
       });
-      navigate("/home");
+
+      // Check user role and navigate accordingly
+      if (user.role === "ADMIN" || user.role === "SUPERADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/home");
+      }
+    } else {
+      toast.error("Login failed");
     }
   }
 
