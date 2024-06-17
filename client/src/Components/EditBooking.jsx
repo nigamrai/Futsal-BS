@@ -25,7 +25,7 @@ const navigate=useNavigate()
         editData
       );
       alert('Booking edit successfully.');
-      navigate("/futsaladmin")
+      navigate("/admin")
       // Optionally, update the UI to reflect the update
     } catch (error) {
       console.error('Error editing bookingTime:', error);
