@@ -72,7 +72,7 @@ function HomePage() {
       </div>
 
       <div className="mt-8 md:mt-12">
-        <p className="text-center text-white text-3xl font-bold">Details</p>
+        <p className="text-center text-black text-5xl font-bold">Details</p>
       </div>
 
       <div className="bg-white rounded-lg shadow-md border-2 border-gray-200 mt-8 flex flex-col md:flex-row justify-center items-center gap-8 px-4 md:px-12 py-8">
@@ -147,11 +147,11 @@ function HomePage() {
         </div>
       </div>
 
-      <div className="text-center text-white text-5xl font-bold mt-[25px]">
+      <div className="text-center text-black text-5xl font-bold mt-[25px]">
         Booking
       </div>
       <div
-        className="bg-white rounded-lg shadow-md border-2 border-gray-200 px-[20px] md:px-[200px] mt-4 mb-4"
+        className="bg-white rounded-lg shadow-md border-2 border-gray-200 px-[20px] md:px-[20px] mt-4 mb-4 w-full "
         id="timetable"
       >
         <p className="text-black font-semibold text-5xl text-center mt-2">
@@ -161,23 +161,23 @@ function HomePage() {
           <p>*Please click the box of respective times to book</p>
           <p>*50% payment is compulsory for booking</p>
         </div>
-        <div className="pb-12">
-          <div className="flex flex-col md:flex-row bg-black text-white h-20 items-center mt-4 rounded-t-lg">
+        <div className="pb-12 w-full">
+          <div className="flex flex-col md:flex-row w-full bg-black text-white h-20 items-center mt-4 rounded-t-lg">
             {/* Left Section */}
             <div className="px-4 md:px-8 lg:px-20 border-r-2 border-white h-full flex justify-center items-center">
               <p className="text-4xl font-bold mt-4 md:mt-0">Day</p>
             </div>
 
             {/* Right Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 flex-grow px-4">
+            <div className="hidden md:flex grid-cols-1 md:grid-cols-2 flex-grow px-4 justify-between">
               {/* Top Right Section */}
               <p className="text-4xl font-bold justify-self-center md:justify-self-start mt-4 md:mt-0 px-4 md:px-0">
                 Time/Bookings
               </p>
 
               {/* Bottom Right Section */}
-              <div className="flex flex-col md:flex-row gap-2 md:gap-4 items-center justify-center md:justify-end px-4 md:px-0">
-                <div className="w-4 h-4 md:w-[20px] md:h-[20px] bg-black border-2 border-black"></div>
+              <div className="flex flex-col md:flex-row gap-2 md:gap-4  items-center  justify-center md:justify-end px-4 md:px-0">
+                <div className="w-4 h-4 md:w-[20px] md:h-[20px] bg-white border-2 border-black"></div>
                 <p className="font-semibold">Available</p>
                 <div className="w-4 h-4 md:w-[20px] md:h-[20px] bg-[#FF3E3C] border-2 border-black ml-2"></div>
                 <p className="font-semibold">Booked</p>

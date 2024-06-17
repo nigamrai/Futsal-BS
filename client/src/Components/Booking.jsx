@@ -1,8 +1,8 @@
 import { Fragment, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from 'react-router-dom';
-import io from 'socket.io-client';
+import { useNavigate } from "react-router-dom";
+import io from "socket.io-client";
 import {
   createNewBooking,
   getAllBookings,
@@ -40,12 +40,25 @@ function Booking({ date, day, getBookings, price }) {
     phoneNumber: data.mobile,
     userId: data._id,
     paymentMethod: "",
-    paymentAmount: ""
+    paymentAmount: "",
   });
 
   const [bookedDate, setBookedDate] = useState([]);
   const timeSlot = [
-    "7am", "8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm"
+    "7am",
+    "8am",
+    "9am",
+    "10am",
+    "11am",
+    "12pm",
+    "1pm",
+    "2pm",
+    "3pm",
+    "4pm",
+    "5pm",
+    "6pm",
+    "7pm",
+    "8pm",
   ];
 
   const handleClick = () => {
@@ -83,15 +96,15 @@ function Booking({ date, day, getBookings, price }) {
 
   useEffect(() => {
     const recalculatePaymentAmount = () => {
-      if (bookingData.paymentMethod === 'HALF') {
-        setBookingData(prevData => ({
+      if (bookingData.paymentMethod === "HALF") {
+        setBookingData((prevData) => ({
           ...prevData,
-          paymentAmount: calculateHalfTotalAmount(prevData.time)
+          paymentAmount: calculateHalfTotalAmount(prevData.time),
         }));
-      } else if (bookingData.paymentMethod === 'FULL') {
-        setBookingData(prevData => ({
+      } else if (bookingData.paymentMethod === "FULL") {
+        setBookingData((prevData) => ({
           ...prevData,
-          paymentAmount: calculateFullTotalAmount(prevData.time)
+          paymentAmount: calculateFullTotalAmount(prevData.time),
         }));
       }
     };
@@ -107,9 +120,15 @@ function Booking({ date, day, getBookings, price }) {
 
   function calculateHalfTotalAmount(time) {
     let pricePerHour = 0;
-    if (time === '7am' || time === '8am' || time === '9am') {
+    if (time === "7am" || time === "8am" || time === "9am") {
       pricePerHour = price.morning / 2;
-    } else if (time === '4pm' || time === '5pm' || time === '6pm' || time === '7pm' || time === '8pm') {
+    } else if (
+      time === "4pm" ||
+      time === "5pm" ||
+      time === "6pm" ||
+      time === "7pm" ||
+      time === "8pm"
+    ) {
       pricePerHour = price.day / 2;
     } else {
       pricePerHour = price.evening / 2;
@@ -119,9 +138,15 @@ function Booking({ date, day, getBookings, price }) {
 
   function calculateFullTotalAmount(time) {
     let pricePerHour = 0;
-    if (time === '7am' || time === '8am' || time === '9am') {
+    if (time === "7am" || time === "8am" || time === "9am") {
       pricePerHour = price.morning;
-    } else if (time === '4pm' || time === '5pm' || time === '6pm' || time === '7pm' || time === '8pm') {
+    } else if (
+      time === "4pm" ||
+      time === "5pm" ||
+      time === "6pm" ||
+      time === "7pm" ||
+      time === "8pm"
+    ) {
       pricePerHour = price.day;
     } else {
       pricePerHour = price.evening;
@@ -147,7 +172,7 @@ function Booking({ date, day, getBookings, price }) {
         phoneNumber: "",
         userId: data._id,
         paymentAmount: "",
-        paymentMethod: ""
+        paymentMethod: "",
       });
     }
   }
@@ -197,7 +222,6 @@ function Booking({ date, day, getBookings, price }) {
               <label htmlFor="date" className="font-semibold text-2xl">
                 Date: {day} {date}
               </label>
-             
             </div>
             <div className="flex flex-wrap justify-between w-full gap-2">
               <div>
@@ -223,7 +247,9 @@ function Booking({ date, day, getBookings, price }) {
               </div>
             </div>
             <div>
-              <p>*Change the phone number if you are booking for other people</p>
+              <p>
+                *Change the phone number if you are booking for other people
+              </p>
               <label htmlFor="phoneNumber" className="text-2xl">
                 Phone Number:
               </label>
@@ -275,14 +301,14 @@ function Booking({ date, day, getBookings, price }) {
   }
 
   return (
-    <div className="flex flex-col md:flex-row mt-[1px] gap-[1px]">
-      <div className="w-full md:w-[227px] bg-black text-white flex flex-col justify-center items-center">
-        <p className="font-bold text-2xl">{day}</p>
-        <p id="date" className="font-semibold text-xl">
+    <div className="flex flex-col md:flex-row mt-1 gap-1 w-full">
+      <div className="w-full md:w-[272px] bg-black text-white flex flex-col justify-center items-center p-4">
+        <p className="font-bold text-xl md:text-2xl">{day}</p>
+        <p id="date" className="font-semibold text-lg md:text-xl">
           {date}
         </p>
       </div>
-      <div className="grow grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-[1px] text-black font-semibold">
+      <div className="flex-grow grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-1 text-black font-semibold w-full">
         {timeSlot.map((item, key) => {
           let bgColor = "bg-white";
           let isDisabled = false;
@@ -300,9 +326,13 @@ function Booking({ date, day, getBookings, price }) {
             <Fragment key={key}>
               {popup(`bookingForm${day}${key}`, date, day, item)}
               <button
-                className={`h-[40px] w-full border-2 border-black flex items-center justify-center ${bgColor} btn text-black font-bold hover:text-white disabled:bg-[#ff0000] disabled:text-black ${isDisabled ? "cursor-not-allowed" : ""}`}
+                className={`h-10 w-full border-2 border-black flex items-center justify-center ${bgColor} btn text-black font-bold hover:text-white disabled:bg-[#ff0000] disabled:text-black ${
+                  isDisabled ? "cursor-not-allowed" : ""
+                }`}
                 disabled={isDisabled}
-                onClick={() => document.getElementById(`bookingForm${day}${key}`).showModal()}
+                onClick={() =>
+                  document.getElementById(`bookingForm${day}${key}`).showModal()
+                }
               >
                 {item}
               </button>
