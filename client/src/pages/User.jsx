@@ -1,7 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
-import { userDetails ,deleteUser, editUser} from "../redux/slices/userSlice.js";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { deleteUser, userDetails } from "../redux/slices/userSlice.js";
 
 function User() {
 
@@ -52,7 +52,7 @@ function User() {
                             <td className="border-2 border-black grid gap-2 grid-cols">
                             
                             <button className="border-2 border-black" onClick={() => removeUser(user._id)}>Delete</button>
-                            <button className="border-2 border-black" onClick={() =>navigate(`/superadmin/user/edit/${user._id}`) }>Edit</button>
+                            <button className="border-2 border-black" onClick={() =>navigate(`/superadmin/user/edit`) }>Edit</button>
                             </td>                   
                             </tr> 
                         })}

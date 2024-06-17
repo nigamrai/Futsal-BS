@@ -14,7 +14,6 @@ const isLoggedIn=async(req,res,next)=>{
     req.user=userDetails;
     next();
 }catch(error){
-   
     res.status(401).json({message:"Invalid Token Hi"});
 }
 }

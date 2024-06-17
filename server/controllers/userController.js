@@ -196,8 +196,8 @@ const removeUser = async (req, res, next) => {
 };
 const editUser = async (req, res) => {
   try{
-    const {fullName,role}=req.body;
-    const userId = await User.findByIdAndUpdate(req.params.userId,{fullName,role});
+    const {fullName,mobile,userId}=req.body;
+     await User.findByIdAndUpdate(userId,{fullName,mobile});
     res.status(200).json({
       success:true,
       message:"User edited successfully"

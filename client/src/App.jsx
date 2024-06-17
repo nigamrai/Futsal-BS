@@ -7,13 +7,16 @@ import Loader from "./Components/Loader/Loader";
 import useLoadingWithRefresh from "./hooks/useLoadingWithRefresh";
 import About from "./pages/About";
 import Admin from "./pages/Admin";
+import BookingList from "./pages/BookingList";
 import Denied from "./pages/Denied";
 import EditPage from "./pages/Edit";
+import EditProfile from "./pages/EditProfile";
 import Futsal from "./pages/Futsal";
 import FutsalAdmin from "./pages/FutsalAdmin";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import Profile from "./pages/Profile";
 import SetPassword from "./pages/SetPassword";
 import Signup from "./pages/Signup";
 import User from "./pages/User";
@@ -33,10 +36,13 @@ function App() {
       <Route
         element={<RequireAuth allowedRoles={["USER", "ADMIN", "SUPERADMIN"]} />}
       >
+        <Route path="/me" element={<Profile/>}></Route>
+        <Route path="/me/edit" element={<EditProfile/>}></Route>
+        <Route path="/bookings/me" element={<BookingList/>}></Route>
         <Route path="/home" element={<HomePage />}></Route>
       </Route>
       <Route element={<RequireAuth allowedRoles={["SUPERADMIN"]} />}>
-        <Route path="/superadmin/user/edit/:id" element={<EditPage />}></Route>
+        <Route path="/superadmin/user/edit" element={<EditPage />}></Route>
         <Route path="/user" element={<User />}></Route>
       </Route>
       <Route element={<RequireAuth allowedRoles={["ADMIN", "SUPERADMIN"]} />}>
