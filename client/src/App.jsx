@@ -9,7 +9,6 @@ import About from "./pages/About";
 import Admin from "./pages/Admin";
 import Denied from "./pages/Denied";
 import EditPage from "./pages/Edit";
-import Futsal from "./pages/Futsal";
 import FutsalAdmin from "./pages/FutsalAdmin";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
@@ -44,7 +43,6 @@ function App() {
           path="/admin/futsaladmin/edit/:id"
           element={<EditBooking />}
         ></Route>
-        <Route path="/futsal" element={<Futsal />}></Route>
         <Route path="/futsaladmin" element={<FutsalAdmin />}></Route>
         <Route path="/admin" element={<Admin />}></Route>
       </Route>

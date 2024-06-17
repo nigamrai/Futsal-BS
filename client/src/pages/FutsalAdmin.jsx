@@ -1,83 +1,91 @@
-import { Link } from "react-router-dom";
-import FutsalLayout from "../Layouts/FutsalLayout";
-import DatePicker from "react-datepicker";
-import { useEffect, useState } from "react";
-import BookedList from "../Components/BookedList";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getAllBookings } from "../redux/slices/bookingSlice";
+import DatePicker from "react-datepicker";
+import BookedList from "../Components/BookedList";
+import "react-datepicker/dist/react-datepicker.css";
 
-function FutsalAdmin(){
-    const [selectedDate, setSelectedDate] = useState(new Date());
-    const dispatch=useDispatch();
-    let dayNames = [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-      ];
+function FutsalAdmin() {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [dates, setDates] = useState([]);
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    getDates();
+    getEveryBookings();
+  }, []);
 
-      const [dates, setDates] = useState([]);
-
-      const getDates = () => {
-        let currentDate = new Date();
-        let datesArray = [];
+  const getDates = () => {
+    let currentDate = new Date();
+    let datesArray = [];
     
-        for (let i = 1; i <= 7; i++) {
-          // console.log(currentDate);
-          let formattedDate = currentDate.toISOString().slice(0, 10);
-          datesArray.push(formattedDate);
-          currentDate.setDate(currentDate.getDate() + 1);
-        }
-        setDates(datesArray);
-      };
-      async function getEveryBookings(){
-        await dispatch(getAllBookings());
-      }
+    for (let i = 1; i <= 7; i++) {
+      let formattedDate = currentDate.toISOString().slice(0, 10);
+      datesArray.push(formattedDate);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    setDates(datesArray);
+  };
 
-      useEffect(() => {
-        getDates();
-        getEveryBookings();
-      }, []);
-   return ( 
-           <div className="bg-white w-full">
-                <p className="text-black font-bold text-5xl text-center p-10">Timetable</p>            
-                <div className="text-black font-bold px-[100px]">
-                    
-                   
-                   
-                    <div className="pb-12 ">
-                    <div className="flex  bg-black text-white h-20 items-center mt-4">
-                        <div className="px-20 border-r-2 border-white  h-full">
-                        <p className="text-4xl font-bold mt-4">Day</p>
-                        </div>
-                        <div className="grid grid-cols-2 grow items-center">
-                        <p className="text-4xl font-bold">
-                            Time/Bookings
-                        </p>
-                        </div>
-                    </div>
-                    <div>
-                        {dates.map((date, index) => (
-                        <BookedList
-                            date={date}
-                            day={dayNames[new Date(date).getDay()]}
-                            key={index}
-                        />
-                        ))}
-                    </div>
-                </div>
-            </div>
-            <div className="text-center">
-                <p className="text-black text-2xl font-bold">
-                *Please click the box to book, update or see booker’s details
-                </p>
-            </div>
+  const getEveryBookings = async () => {
+    await dispatch(getAllBookings());
+  };
+
+  let dayNames = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
+  return (
+    <div className="bg-white w-full">
+      <p className="text-black font-bold text-5xl text-center p-6 md:p-10">Timetable</p>
+      
+      {/* Date Selector */}
+      <div className="flex justify-center mb-4 px-4 md:px-20">
+        <DatePicker
+          selected={selectedDate}
+          onChange={(date) => setSelectedDate(date)}
+          dateFormat="yyyy-MM-dd"
+          className="border border-gray-300 rounded-md p-2 w-full md:w-auto"
+        />
+      </div>
+
+      {/* Timetable Grid */}
+      <div className="px-4 md:px-20">
+        <div className="flex bg-black text-white h-16 md:h-20 items-center mt-4">
+          <div className="w-1/3 border-r-2 border-white h-full px-4">
+            <p className="text-xl md:text-3xl font-bold">Day</p>
+          </div>
+          <div className="w-2/3 grid grid-cols-2 items-center">
+            <p className="text-xl md:text-3xl font-bold">Time/Bookings</p>
+          </div>
         </div>
-   )  
-   
 
-} 
+        {/* List of Bookings */}
+        <div>
+          {dates.map((date, index) => (
+            <BookedList
+              key={index}
+              date={date}
+              day={dayNames[new Date(date).getDay()]}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Note */}
+      <div className="text-center mt-4 mb-8 px-4 md:px-20">
+        <p className="text-sm md:text-lg text-black font-bold">
+          * Please click the box to book, update, or see booker’s details
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default FutsalAdmin;
