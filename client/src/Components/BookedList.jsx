@@ -73,7 +73,7 @@ function BookedList({ date, day }) {
   }
   const handleDelete = async (id) => {
     console.log(id);
-      const response=await dispatch(deleteBooking(id));
+      await dispatch(deleteBooking(id));
       
      
           getEveryBookings();

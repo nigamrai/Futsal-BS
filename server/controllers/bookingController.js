@@ -118,7 +118,7 @@ const updateBookingAfterPayment=async(req,res,next)=>{
         booking.transaction_code = req.transaction_code;
     
         booking.save();
-         res.redirect("http://localhost:5173/home");
+         res.redirect("http://localhost:5173/home#timetable");
       } catch (err) {
          res.status(400).json({ error: err?.message || "No Orders found" });
       }
@@ -130,7 +130,7 @@ const deleteBooking=async(req,res,next)=>{
             status:false
         });
         
-        res.redirect("http://localhost:5173/home");
+        res.redirect("http://localhost:5173/home#timetable");
     }catch(error){
         return res.status(400).json({error:error?.message || "Delete failed"})
     }
@@ -149,4 +149,4 @@ const editBooking = async (req, res) => {
     }
   }
 
-export { createSignature, deleteBooking, getBookings, newBooking, updateBookingAfterPayment, editBooking };
+export { createSignature, deleteBooking, editBooking, getBookings, newBooking, updateBookingAfterPayment };

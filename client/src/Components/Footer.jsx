@@ -9,15 +9,15 @@ function Footer() {
 
   return (
     <div className='bg-black text-white'>
-      <div className='container mx-auto px-4 md:px-10 lg:px-20 py-12'>
+      <div className='container mx-auto px-4 md:px-10 lg:px-20 py-6'>
         <div className='flex flex-col md:flex-row items-center justify-between mb-4'>
           <img src={logo} className='w-32 h-auto mb-4 md:mb-0 rounded-lg' alt="logo" />
           
           <ul className='text-lg'>
             <li className='mb-2 text-xl'>Contact Us</li>
-            <li>{futsalData.map((futsal) => futsal.futsalPhoneNumber)}</li>
-            <li>{futsalData.map((futsal) => futsal.futsalEmail)}</li>
-            <li>{futsalData.map((futsal) => futsal.futsalAddress)}</li>
+            <li>+977-0145325</li>
+            <li>bhatbhateni@gmail.com</li>
+            <li>Chuchepati, Chabahil</li>
           </ul>
           
           <div className='flex flex-col gap-2 md:flex-row text-lg'>
