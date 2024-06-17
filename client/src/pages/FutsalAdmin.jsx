@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { getAllBookings } from '../redux/slices/bookingSlice';
-import DatePicker from 'react-datepicker';
-import BookedList from '../Components/BookedList';
+import { useEffect, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useDispatch } from 'react-redux';
+import BookedList from '../Components/BookedList';
+import { getAllBookings } from '../redux/slices/bookingSlice';
 
 function FutsalAdmin() {
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -45,15 +44,7 @@ function FutsalAdmin() {
         <div className="bg-gray-100 w-full">
             <p className="text-black font-bold text-5xl text-center p-6 md:p-10">Timetable</p>
 
-            {/* Date Selector */}
-            <div className="flex justify-center mb-4 px-4 md:px-20">
-                <DatePicker
-                    selected={selectedDate}
-                    onChange={(date) => setSelectedDate(date)}
-                    dateFormat="yyyy-MM-dd"
-                    className="border border-gray-300 rounded-md p-2 w-full md:w-auto"
-                />
-            </div>
+           
 
             {/* Timetable Grid */}
             <div className="px-4 md:px-20">
