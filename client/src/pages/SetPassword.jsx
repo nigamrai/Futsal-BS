@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { toast } from 'react-hot-toast';
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Logo from "../assets/images/Logo.png";
 import { setPasswordThunk } from "../redux/slices/authSlices";
+
 function SetPassword() {
   const { token } = useParams();
-  console.log(token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [passwordData, setPasswordData] = useState({
@@ -13,6 +14,7 @@ function SetPassword() {
     confirmPassword: "",
     token: token,
   });
+
   function handleUserInput(e) {
     const { name, value } = e.target;
     setPasswordData({
@@ -20,6 +22,7 @@ function SetPassword() {
       [name]: value,
     });
   }
+
   async function setPassword(e) {
     e.preventDefault();
     if (
@@ -34,9 +37,10 @@ function SetPassword() {
     }
 
     if (passwordData.confirmPassword !== passwordData.password) {
-      toast.error("Your confirmPassword does not match with password");
+      toast.error("Your confirm password does not match with password");
       return;
     }
+
     const response = await dispatch(setPasswordThunk(passwordData));
     if (response?.payload?.success) {
       navigate("/");
@@ -49,21 +53,21 @@ function SetPassword() {
   }
 
   return (
-    <div className="h-screen bg-[#0A7116]  p-10">
-      <div className="bg-[#F0F2F5] w-[1440px] h-[650px] rounded-2xl border-8 border-[#50A637] flex justify-around items-center gap-20">
-        <div className="flex flex-col gap-2 ">
-          <img src={Logo} className="w-[200px]" />
-          <h1 className="text-4xl text-black font-bold w-[350px] ">
+    <div className="min-h-screen bg-[#0A7116] p-4 flex justify-center items-center">
+      <div className="bg-[#F0F2F5] max-w-[90%] md:max-w-[80%] lg:max-w-[70%] xl:max-w-[60%] w-full rounded-2xl border-8 border-[#50A637] flex flex-col md:flex-row justify-around items-center gap-10 p-4">
+        <div className="flex flex-col gap-4 items-center md:items-start text-center md:text-left">
+          <img src={Logo} className="w-[150px] md:w-[200px]" alt="Logo" />
+          <h1 className="text-2xl md:text-4xl text-black font-bold max-w-[350px]">
             Bhatbhateni Futsal Booking System
           </h1>
         </div>
         <form
-          className="bg-[#FEFCFC]  w-[440px] rounded-xl flex justify-center flex-col items-center p-6"
+          className="bg-[#FEFCFC] w-full max-w-[400px] rounded-xl flex flex-col items-center p-6"
           onSubmit={setPassword}
         >
-          <div>
+          <div className="w-full mb-2">
             <input
-              className="w-[400px] h-[35px]  border-[1px] border-black rounded p-3 mb-2"
+              className="w-full h-[35px] border-[1px] border-black rounded p-3"
               name="password"
               onChange={handleUserInput}
               type="password"
@@ -72,9 +76,9 @@ function SetPassword() {
               value={passwordData.password}
             />
           </div>
-          <div>
+          <div className="w-full mb-2">
             <input
-              className="w-[400px] h-[35px] border-[1px] border-black rounded p-3"
+              className="w-full h-[35px] border-[1px] border-black rounded p-3"
               name="confirmPassword"
               onChange={handleUserInput}
               type="password"
@@ -84,7 +88,7 @@ function SetPassword() {
             />
           </div>
           <button
-            className=" text-white text-xl font-semibold p-1 text-center w-[400px] h-[50px] bg-[#2BA942] mt-[10px]"
+            className="text-white text-xl font-semibold p-1 text-center w-full h-[50px] bg-[#2BA942] mt-4"
             type="submit"
           >
             Set Password
@@ -94,4 +98,5 @@ function SetPassword() {
     </div>
   );
 }
+
 export default SetPassword;
