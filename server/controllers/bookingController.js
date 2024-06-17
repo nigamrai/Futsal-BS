@@ -150,7 +150,7 @@ const updateBookingAfterPayment = async (req, res, next) => {
     booking.save();
 
     const email = booking.userId.email;
-    const subject = "Bookings Deleted";
+    const subject = "Bookings Added";
     const message = `Hello ${booking.userId.fullName},<br/>
             New booking has been added with the following details:<br/>
             1. Time:${booking.time}<br/>

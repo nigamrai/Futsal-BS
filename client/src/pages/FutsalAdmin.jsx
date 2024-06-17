@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
 import { useDispatch } from 'react-redux';
+import BookedList from '../Components/BookedList';
 import { getAllBookings } from '../redux/slices/bookingSlice';
 import BookedList from '../Components/BookedList';
 import 'react-datepicker/dist/react-datepicker.css';

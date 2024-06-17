@@ -1,8 +1,8 @@
 // eslint-disable-next-line no-unused-vars
 
 import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import axiosInstance from '../Helpers/axiosInstance';
-import { useNavigate, useParams} from 'react-router-dom';
 import HomeLayout from '../Layouts/HomeLayout';
 const EditBooking = () => {
 const navigate=useNavigate()
