@@ -3,65 +3,74 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteUser, userDetails } from "../redux/slices/userSlice.js";
 
-function User() {
 
-    const {userData}=useSelector((state)=>state?.user);
-    const dispatch=useDispatch();
-    const navigate=useNavigate();
-    async function getUserDetails(){
+function User() {
+    const { userData } = useSelector((state) => state?.user);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    async function getUserDetails() {
         await dispatch(userDetails());
     }
-    useEffect(()=>{
+
+    useEffect(() => {
         getUserDetails();
-    },[])
+    }, []);
 
     const removeUser = async (userId) => {
-     const response=await dispatch(deleteUser(userId));
-     if(response?.payload?.success){
-        getUserDetails();
-     }
+        const response = await dispatch(deleteUser(userId));
+        if (response?.payload?.success) {
+            getUserDetails();
+        }
     };
-    
+
     return (
-        <div className="bg-[#D9D9D9] w-full h-auto border-8 border-[#2BA942]">
-            <div className=" text-center mt-[30px]">
-            <p className="text-[#000000] font-[bold] text-4xl">User-Table</p>
+        <div className="bg-[#D9D9D9] w-full h-auto border-8 border-[#2BA942] p-4 rounded-lg">
+            <div className="text-center mt-4 mb-4">
+                <p className="text-[#000000] font-bold text-4xl">User Table</p>
             </div>
-
-            <div className="border-lime-600 text-[#000000] w-[1500px] ml-[245px]">
-                <table className="border-collapse border-black ml-[8px]">
-                     <thead>  
-                        <tr className="border-2 border-black">  
-                            <th className="border-2 border-black">S.N</th>  
-                            <th className="border-2 border-black">UserName</th> 
-                            <th className="border-2 border-black">PhoneNumber</th> 
-                            <th className="border-2 border-black">Email</th> 
-                            <th className="border-2 border-black">ActiveStatus</th> 
-                            <th className="border-2 border-black">Action</th> 
-                        </tr>  
-                        </thead>  
-                        <tbody>   
-                        {userData.map((user)=>{
-
-                            return <tr key={user._id}>   
-                            <td className="border-2 border-black" >{user._id}</td>
-                            <td className="border-2 border-black" >{user.fullName}</td> 
-                            <td className="border-2 border-black" >{user.mobile}</td> 
-                            <td className="border-2 border-black" >{user.email}</td>
-                            <td className="border-2 border-black" >{user.role}</td>  
-                            <td className="border-2 border-black grid gap-2 grid-cols">
-                            
-                            <button className="border-2 border-black" onClick={() => removeUser(user._id)}>Delete</button>
-                            <button className="border-2 border-black" onClick={() =>navigate(`/superadmin/user/edit`) }>Edit</button>
-                            </td>                   
-                            </tr> 
-                        })}
-                     </tbody>      
-                        
-                </table>  
+            <div className="overflow-x-auto">
+                <table className="table-auto w-full text-center border-collapse border border-black">
+                    <thead>
+                        <tr className="bg-gray-200">
+                            <th className="border border-black px-4 py-2">S.N</th>
+                            <th className="border border-black px-4 py-2">UserName</th>
+                            <th className="border border-black px-4 py-2">PhoneNumber</th>
+                            <th className="border border-black px-4 py-2">Email</th>
+                            <th className="border border-black px-4 py-2">ActiveStatus</th>
+                            <th className="border border-black px-4 py-2">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {userData.map((user, index) => (
+                            <tr key={user._id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}>
+                                <td className="border border-black px-4 py-2">{index + 1}</td>
+                                <td className="border border-black px-4 py-2">{user.fullName}</td>
+                                <td className="border border-black px-4 py-2">{user.mobile}</td>
+                                <td className="border border-black px-4 py-2">{user.email}</td>
+                                <td className="border border-black px-4 py-2">{user.role}</td>
+                                <td className="border border-black px-4 py-2">
+                                    <div className="flex justify-center gap-2">
+                                        <button
+                                            className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-700"
+                                            onClick={() => removeUser(user._id)}
+                                        >
+                                            Delete
+                                        </button>
+                                        <button
+                                            className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-700"
+                                            onClick={() => navigate(`/superadmin/user/edit`)}
+                                        >
+                                            Edit
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </div>
-    )
-
+    );
 }
 export default User;

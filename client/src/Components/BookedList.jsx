@@ -10,6 +10,8 @@ function BookedList({ date, day }) {
   const { bookedData } = useSelector((state) => state?.booking);
   const { data } = useSelector((state) => state?.auth);
 
+  const { data } = useSelector((state) => state?.auth);
+
   const [bookingData, setBookingData] = useState({
     date: date,
     day: day,
@@ -81,6 +83,7 @@ function BookedList({ date, day }) {
       navigate("/futsaladmin");
     }
   }
+
 
   function popup(id, date, day, item) {
     return (
