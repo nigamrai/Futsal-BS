@@ -1,11 +1,11 @@
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable react/prop-types */
-import { FaUser, FaUserSecret } from 'react-icons/fa6';
-import logo from '../assets/images/Logo.png';
 import { useState } from 'react';
-import User from './User';
-import FutsalAdmin from './FutsalAdmin';
+import { FaUser, FaUserSecret } from 'react-icons/fa6';
 import { useSelector } from 'react-redux';
+import logo from '../assets/images/Logo.png';
+import FutsalAdmin from './FutsalAdmin';
+import User from './User';
 
 function Admin() {
     const [view, setView] = useState('dashboard'); // 'dashboard', 'user', or 'futsal'
@@ -24,28 +24,28 @@ function Admin() {
     };
 
     return (
-        <div className="h-screen bg-[#FFFFFF] w-full flex flex-col md:flex-row">
+        <div className="min-h-screen bg-[#FFFFFF] flex flex-col md:flex-row">
             {/* Sidebar */}
-            <div className="bg-[#66CC75] w-full md:w-[300px] h-full flex-shrink-0">
-                <div className="p-4 md:p-8">
-                    <img src={logo} className="w-24 h-auto mb-4 md:w-36" alt="logo" />
-                    <div className="flex items-center mb-4 md:mb-8">
-                        <FaUser size={40} className="text-white mr-2 md:mr-4" />
-                        <p className="text-white font-bold text-xl md:text-2xl">Admin Name</p>
+            <div className="bg-[#66CC75] w-full md:w-72 flex-shrink-0">
+                <div className="p-4">
+                    <img src={logo} className="w-24 h-auto mb-4 mx-auto" alt="logo" />
+                    <div className="flex flex-col items-center mb-8">
+                        <FaUser size={40} className="text-white mb-2" />
+                        <p className="text-white font-bold text-xl">Admin Name</p>
                     </div>
                     <div>
                         {/* Navigation buttons */}
-                        <div className="mb-4">
+                        <div className="space-y-4">
                             {role === 'SUPERADMIN' && (
                                 <div className="flex items-center cursor-pointer" onClick={handleUserClick}>
                                     <FaUser size={24} className="text-white mr-2" />
-                                    <span className="text-white text-lg md:text-xl">User Management</span>
+                                    <span className="text-white text-lg">User Management</span>
                                 </div>
                             )}
                             {(role === 'ADMIN' || role === 'SUPERADMIN') && (
                                 <div className="flex items-center cursor-pointer" onClick={handleFutsalClick}>
                                     <FaUserSecret size={24} className="text-white mr-2" />
-                                    <span className="text-white text-lg md:text-xl">Futsal Management</span>
+                                    <span className="text-white text-lg">Futsal Management</span>
                                 </div>
                             )}
                         </div>
@@ -53,13 +53,12 @@ function Admin() {
                 </div>
             </div>
             {/* Main Content Area */}
-            <div className="bg-[#F3F2F2] w-full flex-1">
-                <div className="p-4 md:p-8">
+            <div className="bg-[#F3F2F2] flex-1">
+                <div className="p-4">
                     {/* Dynamic content based on view state */}
                     {view === 'dashboard' && (
                         <div>
                             <h1 className="text-2xl md:text-3xl font-bold mb-4">Admin Dashboard</h1>
-                            {/* Placeholder content */}
                             <p className="text-base md:text-lg">Welcome to the Admin Dashboard.</p>
                         </div>
                     )}

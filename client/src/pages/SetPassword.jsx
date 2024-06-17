@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { toast } from 'react-hot-toast';
+import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Logo from "../assets/images/Logo.png";

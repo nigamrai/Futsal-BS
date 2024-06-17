@@ -2,21 +2,24 @@ import { Fragment, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createNewBooking, deleteBooking, getAllBookings } from "../redux/slices/bookingSlice.js";
+import {
+  createNewBooking,
+  deleteBooking,
+  getAllBookings,
+} from "../redux/slices/bookingSlice.js";
 function BookedList({ date, day }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { bookedData } = useSelector((state) => state?.booking);
-  const {data}=useSelector((state)=>state?.auth)
-  
-  
+  const { data } = useSelector((state) => state?.auth);
+
   const [bookingData, setBookingData] = useState({
     date: date,
     day: day,
     time: "7am",
     duration: "1",
     phoneNumber: "",
-    userId:data._id
+    userId: data._id,
   });
   const [bookedDate, setBookedDate] = useState([]);
   console.log(bookedData);
@@ -40,10 +43,8 @@ function BookedList({ date, day }) {
   // async function getEveryBookings() {
   //   await dispatch(getAllBookings());
   // }
-  
- 
+
   useEffect(() => {
-    
     const dateMap = {};
 
     bookedData.forEach((item) => {
@@ -63,23 +64,18 @@ function BookedList({ date, day }) {
     setBookingData({
       ...bookingData,
       [name]: value,
-     
     });
-   
-  
   }
-  async function getEveryBookings(){
-    await dispatch(getAllBookings())
+  async function getEveryBookings() {
+    await dispatch(getAllBookings());
   }
   const handleDelete = async (id) => {
     console.log(id);
-      await dispatch(deleteBooking(id));
-      
-     
-          getEveryBookings();
-     
-      // Optionally, you can also update the UI to reflect the deletion
-   
+    await dispatch(deleteBooking(id));
+
+    getEveryBookings();
+
+    // Optionally, you can also update the UI to reflect the deletion
   };
   async function createBooking(e) {
     e.preventDefault();
@@ -98,12 +94,12 @@ function BookedList({ date, day }) {
         time: "7",
         duration: "1",
         phoneNumber: "",
-        userId:data._id
+        userId: data._id,
       });
       navigate("/futsaladmin");
     }
   }
-  
+
   function popup(id, date, day, item) {
     // console.log(item)
     return (
@@ -116,127 +112,143 @@ function BookedList({ date, day }) {
             </button>
           </form>
 
-         
-           
-            
-              <div className="text-black">
-                  
-                              {/**/}
-                                {bookedData ? (
-                            
-                                    bookedData
-                                    .filter((booking) => booking.date === date && booking.time === item)
-                                    .map((booking) => {
-                                      console.log(booking);
-                                      return <>
-                                      <p>Booking Details</p>
-                                      <table className="w-[300px] border-collapse border-black">
-                    <thead>
-                    <tr className="border-2 border-black">  
-                            <th className="border-2 border-black">BookedList</th>  
-                            <th className="border-2 border-black">Action</th>  
-                        </tr>  
+          <div className="text-black">
+            {/**/}
+            {bookedData ? (
+              bookedData
+                .filter(
+                  (booking) => booking.date === date && booking.time === item
+                )
+                .map((booking) => {
+                  console.log(booking);
+                  return (
+                    <>
+                      <p>Booking Details</p>
+                      <table className="w-[300px] border-collapse border-black">
+                        <thead>
+                          <tr className="border-2 border-black">
+                            <th className="border-2 border-black">
+                              BookedList
+                            </th>
+                            <th className="border-2 border-black">Action</th>
+                          </tr>
                         </thead>
-                           <tbody>
-                           
-                                       <tr key={booking._id}>
-                                            <td className="border-2 border-black">
-                                            {/* Display users table's users data or information */}
-                                            <p>Date: {booking.date} </p>
-                                              <p>Name: {booking.userId.fullName} </p>
-                                              <p>Time: {booking.time}</p>
-                                              <p>PhoneNumber: {booking.phoneNumber}</p>
-                                              <p>PaymentMethod: {booking.paymentMethod}</p>
-                                              <p>Amount: {booking.amount}</p>
-                                             </td>
-                                            <td  className="border-2 border-black">
-                                            <button className="border-2 border-black"  onClick={() => handleDelete(booking._id)}>Delete</button><br/>
-                                              <button  className="border-2 border-black" onClick={() =>navigate(`/admin/futsaladmin/edit/${booking._id}`) }>Edit</button>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                        </table>
-                                      </>
-                                    
-                                    })   
-                                  ) : (
-                                    <></>
-                                )} 
-                                <>
-                                  {/* Rendering "No booking found" text and book button */}
-                                  {(!bookedData || !bookedData.find(booking => booking.date === date && booking.time === item)) && (
-                                    <form
-            noValidate
-            className="text-black flex flex-col justify-center items-center font-semibold gap-4"
-            onSubmit={createBooking}
-          >
-            <h1 className="text-4xl font-bold">Booking Form</h1>
-            <div>
-              <label htmlFor="date" className="font-semibold text-2xl mr-2">
-                Date: {day}
-              </label>
-              <input
-                type="text"
-                id="date"
-                name="date"
-                onChange={handleUserInput}
-                value={date}
-                className="bg-[#F0F2F5] outline-none font-semibold text-2xl"
-              />
-            </div>
-            <div className="flex justify-between w-full">
-              <div>
-                <label htmlFor="time" className="text-2xl">
-                  Time:
-                </label>
-                
-                <select
-                  id="time"
-                  name="time"
-                  onChange={handleUserInput}
-                  value={bookingData.time}
-                  className="w-[80px] bg-white ml-2 border-2 border-black"
-                  
+                        <tbody>
+                          <tr key={booking._id}>
+                            <td className="border-2 border-black">
+                              {/* Display users table's users data or information */}
+                              <p>Date: {booking.date} </p>
+                              <p>Name: {booking.userId.fullName} </p>
+                              <p>Time: {booking.time}</p>
+                              <p>PhoneNumber: {booking.phoneNumber}</p>
+                              <p>PaymentMethod: {booking.paymentMethod}</p>
+                              <p>Amount: {booking.amount}</p>
+                            </td>
+                            <td className="border-2 border-black">
+                              <button
+                                className="border-2 border-black"
+                                onClick={() => handleDelete(booking._id)}
+                              >
+                                Delete
+                              </button>
+                              <br />
+                              <button
+                                className="border-2 border-black"
+                                onClick={() =>
+                                  navigate(
+                                    `/admin/futsaladmin/edit/${booking._id}`
+                                  )
+                                }
+                              >
+                                Edit
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </>
+                  );
+                })
+            ) : (
+              <></>
+            )}
+            <>
+              {/* Rendering "No booking found" text and book button */}
+              {(!bookedData ||
+                !bookedData.find(
+                  (booking) => booking.date === date && booking.time === item
+                )) && (
+                <form
+                  noValidate
+                  className="text-black flex flex-col justify-center items-center font-semibold gap-4"
+                  onSubmit={createBooking}
                 >
-                  {timeSlot.map((time, index) => {
-                    return (
-                      <option value={time} key={index}>
-                        {time}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-            </div>
-            <div>
-              <label htmlFor="phoneNumber" className="text-2xl">
-                Phone Number:
-              </label>
-              <input
-                type="text"
-                id="phoneNumber"
-                name="phoneNumber"
-                onChange={handleUserInput}
-                value={bookingData.phoneNumber}
-                className="w-[200px] bg-white ml-2 border-2 border-black h-12 px-4"
-                placeholder="Enter phone number"
-              />
-            </div>
+                  <h1 className="text-4xl font-bold">Booking Form</h1>
+                  <div>
+                    <label
+                      htmlFor="date"
+                      className="font-semibold text-2xl mr-2"
+                    >
+                      Date: {day}
+                    </label>
+                    <input
+                      type="text"
+                      id="date"
+                      name="date"
+                      onChange={handleUserInput}
+                      value={date}
+                      className="bg-[#F0F2F5] outline-none font-semibold text-2xl"
+                    />
+                  </div>
+                  <div className="flex justify-between w-full">
+                    <div>
+                      <label htmlFor="time" className="text-2xl">
+                        Time:
+                      </label>
 
-            <button
-              type="submit"
-              name="submit"
-              className="bg-[#2BA942] py-3 w-[350px] text-white font-bold mt-8"
-              
-            >
-              Book Now
-            </button>
-          </form>
-                                  )}
-                                </>
-                           
-              </div>
-          
+                      <select
+                        id="time"
+                        name="time"
+                        onChange={handleUserInput}
+                        value={bookingData.time}
+                        className="w-[80px] bg-white ml-2 border-2 border-black"
+                      >
+                        {timeSlot.map((time, index) => {
+                          return (
+                            <option value={time} key={index}>
+                              {time}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="phoneNumber" className="text-2xl">
+                      Phone Number:
+                    </label>
+                    <input
+                      type="text"
+                      id="phoneNumber"
+                      name="phoneNumber"
+                      onChange={handleUserInput}
+                      value={bookingData.phoneNumber}
+                      className="w-[200px] bg-white ml-2 border-2 border-black h-12 px-4"
+                      placeholder="Enter phone number"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    name="submit"
+                    className="bg-[#2BA942] py-3 w-[350px] text-white font-bold mt-8"
+                  >
+                    Book Now
+                  </button>
+                </form>
+              )}
+            </>
+          </div>
         </div>
       </dialog>
     );
@@ -252,7 +264,6 @@ function BookedList({ date, day }) {
       </div>
       <div className="grow  grid grid-cols-7 gap-[1px] text-black font-semibold">
         {timeSlot.map((item, key) => {
-  
           let bgColor = "bg-white";
           if (bookedDate[date]) {
             // console.log(bookedDate[date]); // Log the array of times for the given date
@@ -261,13 +272,12 @@ function BookedList({ date, day }) {
               // console.log( element)
               // console.log( item)
               if (element == item) {
-
                 bgColor = "bg-[#ff0000]";
-   
+
                 return true;
               }
             });
-      
+
             // console.log(value);
           }
 

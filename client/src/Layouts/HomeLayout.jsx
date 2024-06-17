@@ -34,22 +34,21 @@ function HomeLayout({ children }) {
           >
             My Bookings
           </Link>
-         
         </nav>
-       <div className="flex items-center gap-4">
-       <Link
+        <div className="flex items-center gap-4">
+          <Link
             to="/me"
-            className="text-lg md:text-xl font-semibold hover:text-yellow-600 border-2 border-black px-2 py-1 rounded-md bg-[#B6F2B8] text-black font-semibold"
+            className="hidden sm:block text-lg md:text-xl font-semibold hover:text-yellow-600 border-2 border-black px-2 py-1 rounded-md bg-[#B6F2B8] text-black font-semibold"
           >
             My Profile
           </Link>
-        <button
-          onClick={handleLogout}
-          className="hidden sm:block text-lg md:text-xl font-semibold bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md transition duration-300"
-        >
-          Logout
-        </button>
-       </div>
+          <button
+            onClick={handleLogout}
+            className="hidden sm:block text-lg md:text-xl font-semibold bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md transition duration-300"
+          >
+            Logout
+          </button>
+        </div>
         {/* Add a menu button for smaller screens */}
         <div className="block sm:hidden">
           <button
@@ -90,6 +89,12 @@ function HomeLayout({ children }) {
           <Link
             to="/me"
             className="text-lg font-semibold hover:text-yellow-600"
+          >
+            My Profile
+          </Link>
+          <Link
+            to="/me"
+            className="text-lg md:text-xl font-semibold hover:text-yellow-600 border-2 border-black px-2 py-1 rounded-md bg-[#B6F2B8] text-black font-semibold text-center"
           >
             My Profile
           </Link>

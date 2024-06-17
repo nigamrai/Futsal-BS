@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { getAllBookings } from "../redux/slices/bookingSlice";
-import DatePicker from "react-datepicker";
-import BookedList from "../Components/BookedList";
+import { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
+import { useDispatch } from "react-redux";
+import BookedList from "../Components/BookedList";
+import { getAllBookings } from "../redux/slices/bookingSlice";
 
 function FutsalAdmin() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -43,26 +42,16 @@ function FutsalAdmin() {
 
   return (
     <div className="bg-white w-full">
-      <p className="text-black font-bold text-5xl text-center p-6 md:p-10">Timetable</p>
-      
-      {/* Date Selector */}
-      <div className="flex justify-center mb-4 px-4 md:px-20">
-        <DatePicker
-          selected={selectedDate}
-          onChange={(date) => setSelectedDate(date)}
-          dateFormat="yyyy-MM-dd"
-          className="border border-gray-300 rounded-md p-2 w-full md:w-auto"
-        />
-      </div>
+      <p className="text-black font-bold text-3xl md:text-5xl text-center py-6 md:py-10">Timetable</p>
 
       {/* Timetable Grid */}
       <div className="px-4 md:px-20">
         <div className="flex bg-black text-white h-16 md:h-20 items-center mt-4">
-          <div className="w-1/3 border-r-2 border-white h-full px-4">
-            <p className="text-xl md:text-3xl font-bold">Day</p>
+          <div className="w-1/3 border-r-2 border-white h-full px-2 md:px-4 flex items-center">
+            <p className="text-lg md:text-2xl font-bold">Day</p>
           </div>
           <div className="w-2/3 grid grid-cols-2 items-center">
-            <p className="text-xl md:text-3xl font-bold">Time/Bookings</p>
+            <p className="text-lg md:text-2xl font-bold">Time/Bookings</p>
           </div>
         </div>
 
