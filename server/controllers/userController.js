@@ -152,7 +152,7 @@ const login = async (req, res, next) => {
     res.cookie('refreshToken',refreshToken,cookieOptions);
     res.status(200).json({
       success: "true",
-      message: "User logged in succesfully",
+      message: "Logged in succesfully",
       accessToken,
       user
     });
@@ -217,7 +217,7 @@ const logout=async(req,res)=>{
   
   res.status(200).json({
     success:true,
-    message:"User logout successfully"
+    message:"Logged out successfully"
   })
 }
 export { confirm, editUser, getProfile, getUserDetails, login, logout, removeUser, setPassword, signup };

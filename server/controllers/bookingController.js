@@ -2,6 +2,7 @@ import * as crypto from "crypto";
 import Joi from "joi";
 import mongoose from "mongoose";
 import Booking from "../models/booking.model.js";
+import User from "../models/userModel.js";
 import AppError from "../utils/errorUtil.js";
 import sendEmail from "../utils/sendEmail.js";
 const createSignature = (message) => {
@@ -77,8 +78,31 @@ const newBooking = async (req, res, next) => {
       ],
       { session: session }
     );
-    // console.log(booked);
-    // Create signature
+    console.log(booked[0].userId);
+    const user = await User.findById(booked[0].userId);
+    console.log(user);
+    if (user.role !== "ADMIN") {
+      booked[0].status = false;
+      await booked[0].save();
+      console.log(booked[0]);
+    }
+    
+    if(req.body.email){
+      const subject = "Bookings Added";
+      const message = `Hello,<br/>
+            New booking has been added with the following details:<br/>
+            1. Time:${booked[0].time}<br/>
+            2. Date:${booked[0].date}<br/>
+            3. Day:${booked[0].day}<br/>
+            Thank you,<br/>
+            Bhatbhateni Futsal`;
+
+    try {
+      await sendEmail(req.body.email, subject, message);
+    } catch (error) {
+      console.log(error.message);
+    }
+    }
     const signature = createSignature(
       `total_amount=${booked[0].amount},transaction_uuid=${booked[0]._id},product_code=EPAYTEST`
     );
@@ -124,7 +148,6 @@ const getBookings = async (req, res, next) => {
   try {
     const bookings = await Booking.find({
       status: true,
-      transaction_code: { $exists: true },
     }).populate("userId");
     if (!bookings) {
       return next(new AppError("No data", 401));
@@ -146,7 +169,7 @@ const updateBookingAfterPayment = async (req, res, next) => {
     );
 
     booking.transaction_code = req.transaction_code;
-
+    booking.status=true;
     booking.save();
 
     const email = booking.userId.email;
@@ -157,7 +180,7 @@ const updateBookingAfterPayment = async (req, res, next) => {
             2. Date:${booking.date}<br/>
             3. Day:${booking.day}<br/>
             4. Amount paid:${booking.amount}<br/>
-            Thank you,
+            Thank you,<br/>
             Bhatbhateni Futsal`;
 
     try {
@@ -205,9 +228,29 @@ const deleteBooking = async (req, res, next) => {
 const editBooking = async (req, res) => {
   try {
     const { time } = req.body;
-    const bookingId = await Booking.findByIdAndUpdate(req.params.bookingId, {
-      time,
-    });
+    console.log(time,req.params.id);
+    const booking=await Booking.findById(req.params.id).populate("userId");
+    const oldBooking=booking;
+    booking.time=time;
+    booking.save();
+    const email = booking.userId.email;
+    const subject = "Booking edited";
+    const message = `Hello ${booking.userId.fullName},<br/>
+            Booking with the following details is edited :<br/>
+            1. Time:${oldBooking.time}<br/>
+            2. Date:${oldBooking.date}<br/>
+            3. Day:${oldBooking.day}<br/>
+            4. Amount paid:${booking.amount}<br/>
+            and the new edited time is ${booking.time}<br/>
+            Thank you,<br/>
+            Bhatbhateni Futsal`;
+
+    try {
+      await sendEmail(email, subject, message);
+    } catch (error) {
+      console.log(error.message);
+    }
+
     res.status(200).json({
       success: true,
       message: "Booking edited successfully",
@@ -217,11 +260,11 @@ const editBooking = async (req, res) => {
   }
 };
 export {
-    createSignature,
-    deleteBooking,
-    editBooking,
-    getBookings,
-    newBooking,
-    updateBookingAfterPayment
+  createSignature,
+  deleteBooking,
+  editBooking,
+  getBookings,
+  newBooking,
+  updateBookingAfterPayment
 };
 

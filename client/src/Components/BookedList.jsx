@@ -2,7 +2,10 @@ import { Fragment, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { io } from "socket.io-client";
 import { createNewBooking, deleteBooking, getAllBookings } from "../redux/slices/bookingSlice.js";
+
+const socket = io.connect("http://localhost:5002");
 
 function BookedList({ date, day }) {
   const dispatch = useDispatch();
@@ -10,14 +13,23 @@ function BookedList({ date, day }) {
   const { bookedData } = useSelector((state) => state?.booking);
   const { data } = useSelector((state) => state?.auth);
 
+  const sendBookedData = () => {
+    socket.emit("send_booked_data", { bookedData });
+  };
 
-  
+  useEffect(() => {
+    socket.on("received_booked_data", async (bookedData) => {
+      await dispatch(getAllBookings());
+    });
+  }, []);
+
   const [bookingData, setBookingData] = useState({
     date: date,
     day: day,
     time: "7am",
     duration: "1",
     phoneNumber: "",
+    email:"",
     userId: data._id
   });
   const [bookedDate, setBookedDate] = useState([]);
@@ -62,6 +74,7 @@ function BookedList({ date, day }) {
   const handleDelete = async (id) => {
     await dispatch(deleteBooking(id));
     await dispatch(getAllBookings());
+    socket.emit("send_booked_data", { bookedData });
   };
 
   async function createBooking(e) {
@@ -78,12 +91,13 @@ function BookedList({ date, day }) {
         time: "7am",
         duration: "1",
         phoneNumber: "",
+        email:"",
         userId: data._id
       });
-      navigate("/futsaladmin");
+      await sendBookedData();
+      await dispatch(getAllBookings());
     }
   }
-
 
   function popup(id, date, day, item) {
     return (
@@ -128,81 +142,94 @@ function BookedList({ date, day }) {
             <></>
           )}
           <>
-              {/* Rendering "No booking found" text and book button */}
-              {(!bookedData ||
-                !bookedData.find(
-                  (booking) => booking.date === date && booking.time === item
-                )) && (
-                <form
-                  noValidate
-                  className="text-black flex flex-col justify-center items-center font-semibold gap-4"
-                  onSubmit={createBooking}
-                >
-                  <h1 className="text-4xl font-bold">Booking Form</h1>
-                  <div>
-                    <label
-                      htmlFor="date"
-                      className="font-semibold text-2xl mr-2"
-                    >
-                      Date: {day}
-                    </label>
-                    <input
-                      type="text"
-                      id="date"
-                      name="date"
-                      onChange={handleUserInput}
-                      value={date}
-                      className="bg-[#F0F2F5] outline-none font-semibold text-2xl"
-                    />
-                  </div>
-                  <div className="flex justify-between w-full">
-                    <div>
-                      <label htmlFor="time" className="text-2xl">
-                        Time:
-                      </label>
-
-                      <select
-                        id="time"
-                        name="time"
-                        onChange={handleUserInput}
-                        value={bookingData.time}
-                        className="w-[80px] bg-white ml-2 border-2 border-black"
-                      >
-                        {timeSlot.map((time, index) => {
-                          return (
-                            <option value={time} key={index}>
-                              {time}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    </div>
-                  </div>
-                  <div>
-                    <label htmlFor="phoneNumber" className="text-2xl">
-                      Phone Number:
-                    </label>
-                    <input
-                      type="text"
-                      id="phoneNumber"
-                      name="phoneNumber"
-                      onChange={handleUserInput}
-                      value={bookingData.phoneNumber}
-                      className="w-[200px] bg-white ml-2 border-2 border-black h-12 px-4"
-                      placeholder="Enter phone number"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    name="submit"
-                    className="bg-[#2BA942] py-3 w-[350px] text-white font-bold mt-8"
+            {/* Rendering "No booking found" text and book button */}
+            {(!bookedData ||
+              !bookedData.find(
+                (booking) => booking.date === date && booking.time === item
+              )) && (
+              <form
+                noValidate
+                className="text-black flex flex-col justify-center items-center font-semibold gap-4"
+                onSubmit={createBooking}
+              >
+                <h1 className="text-4xl font-bold">Booking Form</h1>
+                <div>
+                  <label
+                    htmlFor="date"
+                    className="font-semibold text-2xl mr-2"
                   >
-                    Book Now
-                  </button>
-                </form>
-              )}
-            </>
+                    Date: {day}
+                  </label>
+                  <input
+                    type="text"
+                    id="date"
+                    name="date"
+                    onChange={handleUserInput}
+                    value={date}
+                    className="bg-[#F0F2F5] outline-none font-semibold text-2xl"
+                  />
+                </div>
+                <div className="flex justify-between w-full">
+                  <div>
+                    <label htmlFor="time" className="text-2xl">
+                      Time:
+                    </label>
+                    <select
+                      id="time"
+                      name="time"
+                      onChange={handleUserInput}
+                      value={bookingData.time}
+                      className="w-[80px] bg-white ml-2 border-2 border-black"
+                    >
+                      {timeSlot.map((time, index) => {
+                        return (
+                          <option value={time} key={index}>
+                            {time}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="phoneNumber" className="text-2xl">
+                    Phone Number:
+                  </label>
+                  <input
+                    type="text"
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    onChange={handleUserInput}
+                    value={bookingData.phoneNumber}
+                    className="w-[200px] bg-white ml-2 border-2 border-black h-12 px-4"
+                    placeholder="Enter phone number"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="email" className="text-2xl">
+                    Email:
+                  </label>
+                  <input
+                    type="text"
+                    id="email"
+                    name="email"
+                    onChange={handleUserInput}
+                    value={bookingData.email}
+                    className="w-[200px] bg-white ml-2 border-2 border-black h-12 px-4"
+                    placeholder="Enter email"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  name="submit"
+                  className="bg-[#2BA942] py-3 w-[350px] text-white font-bold mt-8"
+                >
+                  Book Now
+                </button>
+              </form>
+            )}
+          </>
         </div>
       </dialog>
     );
