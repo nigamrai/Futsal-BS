@@ -57,14 +57,13 @@ function Admin() {
                 <div className="p-4">
                     {/* Dynamic content based on view state */}
                     {view === 'dashboard' && (
-                        <div>
-                            <h1 className="text-2xl md:text-3xl font-bold mb-4">Admin Dashboard</h1>
-                            <p className="text-base md:text-lg">Welcome to the Admin Dashboard.</p>
+                        <div className='bg-slate-300 h-[300px] w-full text-black rounded-2xl flex justify-center items-center'>
+                            <h1 className="text-2xl md:text-4xl font-bold mb-4">Admin Dashboard</h1>
                         </div>
                     )}
                     {view === 'user' && (
                         <div>
-                            <button onClick={handleBackToDashboard} className="mb-4 text-blue-500">Back to Dashboard</button>
+                            <button onClick={handleBackToDashboard} className="mb-4 text-blue-400">Back to Dashboard</button>
                             <User />
                         </div>
                     )}
