@@ -67,7 +67,7 @@ function Signup() {
         <div className="flex flex-col gap-2 items-center md:items-start">
           <img src={Logo} className="w-[150px] md:w-[200px]" alt="Logo" />
           <h1 className="text-3xl md:text-4xl text-black font-bold text-center md:text-left w-full md:w-[350px]">
-            Bhatbhateni Futsal Booking System
+            Book Bhatbhateni Futsal
           </h1>
         </div>
         <form className="bg-[#FEFCFC] h-auto md:h-[450px] w-full md:w-[440px] rounded-xl p-5" onSubmit={createNewAccount}>

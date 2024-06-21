@@ -69,7 +69,7 @@ function Login() {
         <div className="flex flex-col gap-2 items-center lg:items-start text-center lg:text-left">
           <img src={logo} className="w-[150px] lg:w-[200px]" alt="Logo" />
           <h1 className="text-2xl lg:text-4xl text-black font-bold w-full lg:w-[400px]">
-            Bhatbhateni Futsal Booking System
+            Book Bhatbhateni Futsal
           </h1>
         </div>
         <div>

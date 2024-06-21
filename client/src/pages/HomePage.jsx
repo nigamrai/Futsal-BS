@@ -160,6 +160,7 @@ function HomePage() {
         <div className="font-bold">
           <p>*Please click the box of respective times to book</p>
           <p>*50% payment is compulsory for booking</p>
+          <p>*Paid amount is non-refundable</p>
         </div>
         <div className="pb-12 w-full">
           <div className="flex flex-col md:flex-row w-full bg-black text-white h-20 items-center mt-4 rounded-t-lg">

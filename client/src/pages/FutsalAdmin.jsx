@@ -3,7 +3,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useDispatch } from 'react-redux';
 import BookedList from '../Components/BookedList';
 import { getAllBookings } from '../redux/slices/bookingSlice';
-import 'react-datepicker/dist/react-datepicker.css';
 
 function FutsalAdmin() {
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -50,10 +49,10 @@ function FutsalAdmin() {
             {/* Timetable Grid */}
             <div className="px-4 md:px-20">
                 <div className="flex bg-black text-white h-16 md:h-20 items-center mt-4">
-                    <div className="w-1/3 border-r-2 border-white h-full px-4">
+                    <div className="w-[258px] border-r-2 border-white h-full px-4 flex justify-center items-center ">
                         <p className="text-xl md:text-3xl font-bold">Day</p>
                     </div>
-                    <div className="w-2/3 grid grid-cols-2 items-center">
+                    <div className=" grid grid-cols-2 items-center px-4">
                         <p className="text-xl md:text-3xl font-bold">Time/Bookings</p>
                     </div>
                 </div>

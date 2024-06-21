@@ -152,7 +152,7 @@ const login = async (req, res, next) => {
     res.cookie('refreshToken',refreshToken,cookieOptions);
     res.status(200).json({
       success: "true",
-      message: "User logged in succesfully",
+      message: "Logged in succesfully",
       accessToken,
       user
     });
@@ -182,7 +182,20 @@ const getUserDetails = async (req, res, next) => {
 const removeUser = async (req, res, next) => {
   try {
     const userId = req.params.userId;
+    const user=await User.findById(userId);
     await User.findByIdAndUpdate(userId,{status:false});
+    const email = user.email;
+    const subject = "Account deleted";
+    const message = `Hello ${user.fullName},<br/>
+            You account has been deleted.<br/>
+            Thank you,<br/>
+            Bhatbhateni Futsal`;
+
+    try {
+      await sendEmail(email, subject, message);
+    } catch (error) {
+      console.log(error.message);
+    }
 
 
     res.status(200).json({
@@ -217,7 +230,7 @@ const logout=async(req,res)=>{
   
   res.status(200).json({
     success:true,
-    message:"User logout successfully"
+    message:"Logged out successfully"
   })
 }
 export { confirm, editUser, getProfile, getUserDetails, login, logout, removeUser, setPassword, signup };
