@@ -40,7 +40,7 @@ function App() {
         <Route path="/bookings/me" element={<BookingList/>}></Route>
         <Route path="/home" element={<HomePage />}></Route>
       </Route>
-      <Route element={<RequireAuth allowedRoles={["SUPERADMIN"]} />}>
+      <Route element={<RequireAuth allowedRoles={["ADMIN"]} />}>
         <Route path="/superadmin/user/edit/:id" element={<EditPage />}></Route>
         <Route path="/user" element={<User />}></Route>
       </Route>

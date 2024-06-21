@@ -31,7 +31,7 @@ function User() {
             <div className="overflow-x-auto">
                 <table className="table-auto w-full text-center border-collapse border border-black">
                     <thead>
-                        <tr className="bg-gray-200">
+                        <tr className="bg-gray-200 text-black">
                             <th className="border border-black px-2 py-1 sm:px-4 sm:py-2">S.N</th>
                             <th className="border border-black px-2 py-1 sm:px-4 sm:py-2">UserName</th>
                             <th className="border border-black px-2 py-1 sm:px-4 sm:py-2">PhoneNumber</th>
@@ -43,21 +43,21 @@ function User() {
                     <tbody>
                         {userData.map((user, index) => (
                             <tr key={user._id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}>
-                                <td className="border border-black px-2 py-1 sm:px-4 sm:py-2">{index + 1}</td>
-                                <td className="border border-black px-2 py-1 sm:px-4 sm:py-2">{user.fullName}</td>
-                                <td className="border border-black px-2 py-1 sm:px-4 sm:py-2">{user.mobile}</td>
-                                <td className="border border-black px-2 py-1 sm:px-4 sm:py-2">{user.email}</td>
-                                <td className="border border-black px-2 py-1 sm:px-4 sm:py-2">{user.role}</td>
+                                <td className="border border-black px-2 py-1 sm:px-4 sm:py-2 text-black">{index + 1}</td>
+                                <td className="border border-black px-2 py-1 sm:px-4 sm:py-2 text-black">{user.fullName}</td>
+                                <td className="border border-black px-2 py-1 sm:px-4 sm:py-2 text-black">{user.mobile}</td>
+                                <td className="border border-black px-2 py-1 sm:px-4 sm:py-2 text-black">{user.email}</td>
+                                <td className="border border-black px-2 py-1 sm:px-4 sm:py-2 text-black">{user.role}</td>
                                 <td className="border border-black px-2 py-1 sm:px-4 sm:py-2">
                                     <div className="flex flex-col sm:flex-row justify-center gap-2">
                                         <button
-                                            className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-700"
+                                            className="bg-red-500 text-black px-4 py-1 rounded hover:bg-red-700"
                                             onClick={() => removeUser(user._id)}
                                         >
                                             Delete
                                         </button>
                                         <button
-                                            className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-700"
+                                            className="bg-blue-500 text-black px-4 py-1 rounded hover:bg-blue-700"
                                             onClick={() => navigate(`/superadmin/user/edit/${user._id}`)}
                                         >
                                             Edit

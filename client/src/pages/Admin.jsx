@@ -47,7 +47,7 @@ function Admin() {
                     <div>
                         {/* Navigation buttons */}
                         <div className="space-y-4">
-                            {role === 'SUPERADMIN' && (
+                            {role === 'ADMIN' && (
                                 <div className="flex items-center cursor-pointer" onClick={handleUserClick}>
                                     <FaUser size={24} className="text-white mr-2" />
                                     <span className="text-white text-lg">User Management</span>
@@ -73,19 +73,19 @@ function Admin() {
                 <div className="p-4">
                     {/* Dynamic content based on view state */}
                     {view === 'dashboard' && (
-                        <div className='bg-slate-300 h-[300px] w-full text-black rounded-2xl flex justify-center items-center'>
-                            <h1 className="text-2xl md:text-4xl font-bold mb-4">Admin Dashboard</h1>
+                        <div className='bg-slate-300 h-[270px] w-full text-black rounded-2xl flex justify-center items-center'>
+                            <h1 className="text-2xl md:text-4xl font-bold mb-4">Dashboard</h1>
                         </div>
                     )}
                     {view === 'user' && (
-                        <div>
-                            <button onClick={handleBackToDashboard} className="mb-4 text-blue-400">Back to Dashboard</button>
+                        <div className=''>
+                            <button onClick={handleBackToDashboard} className="h-[50px] w-[200px] bg-white rounded-2xl border-solid border-2 border-green-500 text-blue-400 font-bold text-xl">Back to Dashboard</button>
                             <User />
                         </div>
                     )}
                     {view === 'futsal' && (
                         <div>
-                            <button onClick={handleBackToDashboard} className="mb-4 text-blue-500">Back to Dashboard</button>
+                            <button onClick={handleBackToDashboard} className="h-[50px] w-[200px] bg-white rounded-2xl border-solid border-2 border-green-500 text-blue-400 font-bold text-xl">Back to Dashboard</button>
                             <FutsalAdmin />
                         </div>
                     )}
