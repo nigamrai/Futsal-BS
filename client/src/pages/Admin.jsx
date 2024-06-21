@@ -2,14 +2,18 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import { FaUser, FaUserSecret } from 'react-icons/fa6';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
 import logo from '../assets/images/Logo.png';
-import User from './User';
+import { logout } from '../redux/slices/authSlices';
 import FutsalAdmin from './FutsalAdmin';
+import User from './User';
 
 function Admin() {
     const [view, setView] = useState('dashboard'); // 'dashboard', 'user', or 'futsal'
     const { role } = useSelector((state) => state?.auth);
+    const { data } = useSelector((state) => state?.auth);
+    const dispatch = useDispatch();
 
     const handleUserClick = () => {
         setView('user');
@@ -23,15 +27,22 @@ function Admin() {
         setView('dashboard');
     };
 
+    async function handleLogout() {
+        const response = await dispatch(logout());
+        if (response?.payload?.success) {
+          navigate("/");
+        }
+      }
+
     return (
         <div className="min-h-screen bg-[#FFFFFF] flex flex-col md:flex-row">
             {/* Sidebar */}
-            <div className="bg-[#66CC75] w-full md:w-72 flex-shrink-0">
-                <div className="p-4">
+            <div className="bg-[#66CC75] w-full md:w-72 flex-shrink-0 flex flex-col justify-between">
+                <div className="p-4 sticky top-0 p-4 bg-[#66CC75]">
                     <img src={logo} className="w-24 h-auto mb-4 mx-auto" alt="logo" />
                     <div className="flex flex-col items-center mb-8">
                         <FaUser size={40} className="text-white mb-2" />
-                        <p className="text-white font-bold text-xl">Admin Name</p>
+                        <p className="text-white font-bold text-xl">{data.fullName}</p>
                     </div>
                     <div>
                         {/* Navigation buttons */}
@@ -50,6 +61,11 @@ function Admin() {
                             )}
                         </div>
                     </div>
+                </div>
+                <div className="p-4 mt-auto sticky bottom-0 w-full bg-[#66CC75]">
+                    <button onClick={handleLogout} className="w-full text-white bg-red-600 py-2 rounded">
+                        Logout
+                    </button>
                 </div>
             </div>
             {/* Main Content Area */}

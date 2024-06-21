@@ -81,7 +81,7 @@ const newBooking = async (req, res, next) => {
     console.log(booked[0].userId);
     const user = await User.findById(booked[0].userId);
     console.log(user);
-    if (user.role !== "ADMIN") {
+    if (user.role=="USER") {
       booked[0].status = false;
       await booked[0].save();
       console.log(booked[0]);

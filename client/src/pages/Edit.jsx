@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { editUser } from "../redux/slices/userSlice";
 
 function EditProfile() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {userId}=useParams();
   const { data } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
     fullName: "",
     mobile: "",
-    userId: "",
+    userId: ""
   });
 
   useEffect(() => {
@@ -18,7 +19,7 @@ function EditProfile() {
     setFormData({
       fullName: data.fullName,
       mobile: data.mobile,
-      userId: data._id,
+      userId:userId 
     });
   }, [data]);
 
